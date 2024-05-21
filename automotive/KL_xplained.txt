@@ -1,0 +1,21 @@
+When you spend anytime more involved with vehicles than reading a Haynes manual at some point you will need to know what someone means by KL31 in regards to automotive wiring for 12 V vehicles.
+
+'KL' is the abbreviation for 'klemme' which is the German term for connector/connection, or 'Klemmenbezeichnugen'. Klemmenbezeichnugen means Terminal designations.
+
+This is mostly encoded in the German standard DIN 72552 - 'Standard for labelling the electric terminals in automotive wiring'.
+
+However, in short, the KL codes you are most likely to want to know about are:
+
+    KL15 is ignition switch position #2 (on)
+    KL30 is battery positive, there will be 12VDC (or 24VDC) on this at all times
+    KL31 is battery negative, (unswitched)
+    KL50 is ignition position #3 (start)
+    KLR means ignition switch position #1 (Accessory) In this mode the radio/IVI, windows, etc will be powered on, but the traction motor will not be enabled (ICE or EV), there may be limited HVAC (Heating Ventilation and Air Conditioning) due to the HVAC compressor, and the heater not being powered.
+
+Normally when talking about KL30 and KL31, it is the positive and negative poles of the 12V (or 24V) vehicle battery.
+
+Looks like the ignition can be in 4 positions:
+0/3 -> all disabled
+1/3 -> accessories enabled
+2/3 -> ignition on, ready to start the engine. All electronic devices powered-up and ready.
+3/3 -> engine is operating. All electronic devices operable.

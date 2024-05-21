@@ -1,0 +1,41 @@
+#####################################################
+#####       VFF-PVS-0series_xplained.txt        #####
+#####################################################
+
+
+
+########################################################################################
+Info from the Internet forum
+########################################################################################
+
+VFF: Vorserien-Freigabe-Fahrzeug = Approval before series production vehicles
+Here the first samples come out, the customer has to review dimensionals and state which dimensions need to be improved.
+
+PVS: Produktionsversuchsserie = Production test series
+Here the first samples have been validated no at 100% dimensioal wise but probably deviated or with authorization to work under an action plan to get to the 100% quality part, HAS TO BE FUNCTIONAL, with definitive materials and suppliers approved... has to be ready to make assembly tests in modules.
+In VW words the part must be at least in NOTE 3.
+
+0-Series = Null series
+Here the parts need to be ready 99%, the parts will be assembled into the vehicle and is in here where the PPAP is submitted and all you have to do is wait for the approval to SOP....
+
+
+
+VFF: Vorserien-Freigabe-Fahrzeug = Approval before series production vehicles
+Here the first samples come out, the customer has to review dimensionals and state which dimensions need to be improved.
+
+PVS: Produktionsversuchsserie = Production test series
+Here the first samples have been validated no at 100% dimensioal wise but probably deviated or with authorization to work under an action plan to get to the 100% quality part, HAS TO BE FUNCTIONAL, with definitive materials and suppliers approved... has to be ready to make assembly tests in modules. In VW words the part must be at least in NOTE 3.
+
+0-Series = Null series
+Here the parts need to be ready 99%, the parts will be assembled into the vehicle and is in here where the PPAP is submitted and all you have to do is wait for the approval to SOP....
+
+
+
+
+########################################################################################
+My understanding
+########################################################################################
+VFF car     - very early prototype of the car.
+PVS car     - 2nd phase prototype of the car. Fixes some issues found in the VFF prototype.
+0-Series    - last stage prototype of the car. Almost everything is ready for series production.
+

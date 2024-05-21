@@ -1,0 +1,14 @@
+#############################################################################
+### V-model - a kind of system development lifecycle, methodology of work ###
+#############################################################################
+
+The number of levels may depend of the V-model implementation, can be company specific.
+Example V-model:
+SWE1 (Software Requirements) -------------------------------------> SWE6 (Software Requirements Tests)
+    SWE2 (High Level Software Design) ------------------------> SWE5 (High Level Software Tests)
+        SWE3 (Low Level Software Design) ------------------> SWE4 (Low Level Software Tests)
+                                             - Coding -
+                                             
+The left side of V-model (SWE1, SWE2, SWE3) is called: Verification Phase.
+The right side of V-model (SWE4, SWE5, SWE6) is called: Validation Phase.
+Each validation part tests its verification part, i.e. SWE5 performs tests of SWE2.

@@ -1,0 +1,54 @@
+########################
+Automotive abbreviations
+########################
+
+--- 0 ---
+0-Series      = Null series. (a stage of the cars prototype production).
+
+
+
+--- A ---
+ASPICE        = Automotive SPICE
+
+
+
+--- B ---
+* BP          = Base Pracitise
+
+
+
+--- E ---
+* EOL         = End Of Line inspection
+* EOL         = End of Life
+
+
+
+--- K ---
+* KL15        = ignition switch position #2 (on)
+* KL_30       = + connector (KLemmen) of the car's battery (typically 12VDC (or 24VDC) on this at all times)
+* KL_31       = - connector (KLemmen) of the car's battery
+* KL50        = is ignition position #3 (start)
+* KLR         = means ignition switch position #1 (Accessory) In this mode the radio/IVI, windows, etc will be powered on, but the traction motor will not be enabled (ICE or EV), there may be limited HVAC (Heating Ventilation and Air Conditioning) due to the HVAC compressor, and the heater not being powered.
+
+
+
+--- P ---
+* PVS         = Produktionsversuchsserie. (a stage of the cars prototype production). Meaning: Production test series.
+
+
+
+--- T ---
+* TEP         = TEchnical Process
+
+
+
+--- U ---
+* UML         = Unified Modelling Language
+
+
+
+--- V ---
+* V-model     = a kind of system development lifecycle, methodology of work
+* VFF         = Vorserien-Freigabe-Fahrzeug. (a stage of the cars prototype production). Meaning: Approval before series production vehicles.
+
+

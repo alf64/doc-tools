@@ -1,0 +1,155 @@
+#############################
+###   EA - UML - faq      ###
+#############################
+
+
+EA          = Enterprise Architect
+UML         = Unified Modelling Language
+
+
+--- 3 views that describe the system ---
+1. Object model         --->   Class Diagrams
+2. Interaction Model    --->   Activity Diagrams, Sequence Diagrams, Communication/Interaction Diagrams
+3. Dynamic Model        --->   State Machine Diagrams
+
+
+
+--- Class Diagrams ---
+A class has:
+ - data (attributes)
+ - functionality (operations)
+
+
+
+--- Sequence Diagrams ---
+ - describe interaction between objects
+ - client - server type of relationship
+ - shows interactions (in order)
+ - implement 'Use Cases' (show usages)
+
+
+
+--- State Machine Diagrams ---
+ - specify the dynamic behavior of a model
+ - system can demonstrate different behavior depending on the state it is in
+ - each class with more than 1 state should have its own state machine diagram
+ - State Model consists of State Machine Diagrams
+
+
+
+--- Possible Diagrams ---
+* Common relationship diagram
+* High Level Overview:
+ - Package diagrams
+ - Use Case diagrams
+ - Component diagrams
+ - Deployment diagrams
+* Structure:
+ - Class diagrams
+* Interaction - Behaviour
+ - Sequence diagrams
+ - Activity diagrams
+* State:
+ - State Machine diagrams
+
+
+
+--- Common reliationships between objects in UML ---
+* Association                       - 'This' is associated with 'that'              - i.e. 'Computer' is associated with 'Software'.
+* Dependency                        - 'This' depends on 'that'. “Needs a..”         - i.e. 'Computer' depends on 'Power Supply'.
+* Realization                       - 'This' realizes 'that'. “Implements a..”      - i.e. 'Computer' realizes some 'interface/API'.
+* Generalization                    - 'This' extends 'that'. “Is a..”               - i.e. 'Keyboard' generalizes/"is a" 'I/O Device'.
+* Aggregation                       - 'This' owns 'that'. "Has a.."                 - i.e. 'Computer' aggregates/"has a" 'I/O Device'.
+* Composition (strong aggregation)  - 'This' is composed of 'that'. "Requires a..." - i.e. 'Computer' composes of a 'Processor'.
+
+In programming terms, Aggregation is usually used to mark that one class owns the other (uses an object of it). I.e.: 'Class1' <>--- aggregates --- 'Class2'
+<>      - is a unfilled diamond shape. Used in: Aggregation and Composition.
+->      - is an arrow shape. Used in: Dependency, Realization and Generalization.
+-       - just a line without shapes. Used in: Association.
+Examples:
+'Computer'      <>--- aggregates -----      'Keyboard'
+'Computer'      <>--- aggregates -----      'I/O Device'
+'Computer'      <>--- composes of -----     'Processor'
+'Keyboard'      ----- generalizes ---->     'I/O Device'
+'Computer'      ----- associates -----      'Software'
+'Computer'      ----- realizes ---->        'Interface/API'
+'Computer'      ----- depends on ---->      'Power Suply'
+
+
+
+--- Software Design Levels in NS ---
+Below are design types used in NS and what ASPICE aspects they cover
+Struct Design       ---> covers SWE2 (High-Level Design)
+Layer Design        ---> covers SWE2 (High-Level Design)
+Module Design       ---> covers SWE3 (Low-Level Design)
+
+
+
+--- Basic artifacts terminology ---
+Component           = folder
+Module              = file (.c, .h)
+SW Unit             = function
+The hierarchy is as follows (from highest to lowest):
+Component ---> Module ---> SW Unit
+
+
+
+--- How to relate diagrams to artifacts ---
+Class diagrams      = class diagrams are created per module (a pair of: .c, .h)
+Activity diagram    = activity diagrams are created per C functions
+Sequence diagrams   = should probably be created per use case (multiple functions call in particular order for specific purpose)
+
+
+
+--- V-model ---
+V-model is a kind of system development lifecycle, methodology of work
+The number of levels may depend of the V-model implementation, can be company specific.
+Example V-model:
+SWE1 (Software Requirements) -------------------------------------> SWE6 (Software Requirements Tests)
+    SWE2 (High Level Software Design) ------------------------> SWE5 (High Level Software Tests)
+        SWE3 (Low Level Software Design) ------------------> SWE4 (Low Level Software Tests)
+                                             - Coding -
+                                             
+The left side of V-model is called: Verification Phase.
+The right side of V-model is called: Validation Phase.
+Each validation part tests its verification part, i.e. SWE5 performs tests of SWE2.
+
+
+
+--- EA hotkeys ---
+Ctrl + U            ---> Find usages of a selected object in project tree in all diagrams.
+Alt + G             ---> find object origins in project tree (first click on this object on the diagram, then hit the hotkey)
+Alt + Shift + G     ---> find diagram in proejct tree (first click on the background of the currently opened diagram, then hit the hotkey)
+Ctrl + Delete       ---> Delete the selected element in a diagram from the model.
+F11                 ---> Generate code for the selected single element.
+Shift+F11           ---> Generate code for all the elements of the selected package.
+F12                 ---> View source code for the selected class.
+Ctrl+Alt+B          ---> Open Baseline manager for the selected package.
+
+
+
+--- EA locks ---
+Before making any changes, even basic ones like component name changing, you have to acquire a lock.
+Right click on component -> Package Control -> Apply/Release User Lock... -> select: 'Apply' -> OK
+To release lock perform the same but select 'Release' instead of 'Apply'
+Locks are marked as exclamation marks (!)
+Locks are not released when you close EA, you have to release them by yourself.
+Administrators contain power of releasing someone's locks.
+When someone holds a lock, it is usually red.
+Your locks are usually light blue.
+
+
+
+--- EA enabling Trace(ability) and Toolbox view ---
+'Design' tab ---> Toolbox
+'Design' tab ---> Trace
+Trace view allows you to check Traceability
+Toolbox allows you to create diagrams
+
+
+
+--- EA - stereotypes ---
+Stereoptype     ---> means any non-standard type in EA, i.e.: Enum
+
+
+

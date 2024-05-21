@@ -1,0 +1,13 @@
+#########################
+##### Eclipse hints #####
+#########################
+
+
+##### Disable/enable newline addition by Eclipse when saving text file #####
+Window -> Preferences -> C/C++ -> Editor -> Save Actions -> Ensure newline at the end of file
+
+
+##### Preferred character encoding #####
+UTF-8
+If ANSI is needed, select UTF-8 as ANSI is a subset of UTF-8.
+
