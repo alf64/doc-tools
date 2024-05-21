@@ -1,0 +1,5 @@
+ONLY FOR GITLAB REPOSITORIES: When gitbash throws HTTP Basic: Access Denied when you try to do any action in repo i.e. git clone, git pull:
+1. Probably the credentials to your PC/Windows account has changed, and with this the password to gitlab changes (if gitlab associated with Windows)
+2. In Windows find "credential manager" -> "Windows Credential".
+3. Find saved credentials for gitlab and remove them.
+4. Try to do any action in repository (i.e. git clone, git pull). You should be asked for your current Windows credentials. Fill them in and you should be fine.

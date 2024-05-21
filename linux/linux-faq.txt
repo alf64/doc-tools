@@ -1,0 +1,78 @@
+Useful cmds for linux.
+
+##### Adding new user. #####
+a) add new user and create default home directory for him:
+sudo useradd -m <username>
+(-m --create-home means that it should create home dir)
+b) add new user and create home directory for him at /opt/username
+sudo useradd -m -d /opt/username <username>
+c) Create user with forced user id (by default linux assigns that):
+sudo useradd -u 1500 <username>
+d) Create user with custom comment
+sudo useradd -c "Test User Account" username
+Comment is stored in the /etc/passwd file, along with all users info.
+e) Create user with specified default shell (in this case: /bin/bash)
+sudo useradd -s /bin/bash <username>
+f) Create new user named username with primary group 'users' and secondary groups 'wheel' and 'docker'
+sudo useradd -g users -G wheel,developers username
+Each user can belong to only one primary group and zero or multiple secondary groups.
+Typically the primary group name is the same as username.
+Check the groups using: id <username>
+
+
+##### Assign new password (or change existing password) for user #####
+You must assign a password for newly created user, otherwise the system will ask for the password which no one knows.
+a) assign/change password for a user <username>
+sudo passwd <username>
+The prompt will pop up and you will be asked for new password.
+b) To set empty password (no password)
+sudo passwd -d <username>
+c) To expire someone's password (force him to change it on his next logging)
+sudo passwd -e <username>
+d) to lock someone's account (prevent from logging in - "authentification error" will pop up on his next logging)
+sudo passwd -l <username>
+e) to unlock someone's account
+sudo passwd -u <username>
+
+
+##### List all users #####
+a) You can list users by displaying /etc/passwd file
+cat /etc/passwd
+
+
+##### Verify user id #####
+id -u <username>
+
+
+########## Verify user groups #####
+a) Verifies user groups (primary and secondary)
+id <username>
+b) Verifies currently logged user groups
+groups
+
+
+########## Verify current shell #####
+echo $SHELL
+
+
+########## Copying files between computers #######
+scp <source-file-path> <username>@<destination-ip>:<destination-path>
+Example:
+scp file1.txt bmudlaff@192.168.1.201:/home/bmudlaff/
+Add '-r' if you are copying over whoel folders, not single files.
+
+
+########## Dowiazania #################
+1) dowiazania twarde
+utworzone dowiazanie twarde ma ten sam nr i-wezla co plik oryginalny
+tzn. ze jest to w systemie ten sam plik (tylko pod inna nazwa), ALE WCIAZ TEN SAM
+edycja pliku bedacego dowiazaniem twardym jest rownoznaczna z edycja pliku oryginalnego
+usuniecie pliku oryginalnego nie ma wplywu na dowiazanie twarde, gdyz jest ono tym samym plikiem, tak jakby kopia (choc niecalkiem bo jest tym samym plikiem), dopiero usuniecie wszystkich dowiazan jest rownoznaczne z usunieciem danego pliku 
+
+2) dowiazania symboliczne
+dowiazanie ma inny nr iwezla, i tylko wskazuje na plik oryginalny
+usuniecie pliku oryginalnego psuje dowiazanie bo nie ma sie ono do czego odwolac
+
+
+poleceniem: ls -ali
+mozna wyswietlic pliki i sprawdzic ich nr i-wezlow

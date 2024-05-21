@@ -1,0 +1,109 @@
+####################################
+#### Interesting tricks in C++: ####
+####################################
+
+
+
+
+1. Defining functions that are similiar using less code.
+----- Example 1 -----
+In this example: all functions defined as do nothing in a base class, because deriving class must overwrite them.
+Class name is: Foo
+
+In foo.h file make a prototypes, i.e.:
+    virtual void onCompleted();
+    virtual void onDestruction();
+
+In foo.c file define a macro:
+#define PAGE_VOID_EMPTY(_name) \
+    void Foo::_name() \
+    { \
+    }
+
+In class.c file use such macro to define empty functions:
+PAGE_VOID_EMPTY(onCompleted)
+PAGE_VOID_EMPTY(onDestruction)
+
+Compiler will create the following:
+void Foo::onCompleted()
+{
+}
+void Foo::onDestruction()
+{
+}
+
+
+----- Example 2 -----
+Defining functions that will all return value of the parameter (each function - different parameter)
+Class name is: Foo
+
+1. Implement the following in your foo.h file (a list of parameters to support):
+#define PARAMETERS(_F) \
+    _F(int, Speed, m_speed) \
+    _F(float, Height, m_height)
+
+2. Implement the following define in you foo.c file:
+#define CREATE_GET_FUNC(type, funcprefix, paramname) \
+    type Foo::funcprefix##Get() \
+    { \
+        return paramname;
+    }
+PARAMETERS(CREATE_GET_FUNC)     // this creates functions
+#undef CREATE_GET_FUNC
+
+The compiler will generate the following in your foo.c:
+int Foo::SpeedGet()
+{
+    return m_speed;
+}
+float Foo::HeightGet()
+{
+    return m_height;
+}
+
+To add a prototypes to the foo.h file, add the following in a class .h file:
+#define CREATE_GET_FUNC_PROT(type, funcprefix, paramname) type funcprefix##Get();            // paramname not used, but still here to be compatible with PARAMETERS(_F) macro
+PARAMETERS(CREATE_GET_FUNC_PROT)        // this creates prototypes
+#undef CREATE_GET_FUNC_PROT
+
+The compiler will generate the following in your foo.h:
+int SpeedGet();
+float HeightGet();
+
+
+
+
+2. Sharing a pointer (or reference) to an instance of some class across whole project
+Let's say you have one most important class called Application in your project, and one and only instance of this class.
+
+in the Application.h you could have the following code:
+#define APP() Application::instance()
+class Application : public QObject
+{
+    // your class definition stuff
+    public:
+    static Application &instance();    
+}
+The APP() define calls static function instance() that returns reference to the Application object.
+Since the APP() is defined outside of a class, anyone who includes the Application.h can call it and obtain the reference.
+
+in the Application.cpp you could have the following code:
+static Application *s_instance = nullptr;
+Application &Application::instance()
+{
+    Q_ASSERT(s_instance != nullptr);
+    return *s_instance;
+}
+Application::Application(void) :
+    m_some_var(0)
+{
+    s_instance = this;
+}
+
+As you can see, the s_instance variable is set in the class constructor.
+s_instance does not belong to the class, it's a static global variable.
+
+In your main.cpp you could have:
+Application *logic = new Application();
+// and that's it, the main can now do nothing (stay idle at while(1) or something)
+// Calling APP() from anywhere now allows for accessing the created logic

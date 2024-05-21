@@ -1,2 +1,2 @@
 # doc-tools
-Documents, hints, faqs
+A set of documentations on different topics

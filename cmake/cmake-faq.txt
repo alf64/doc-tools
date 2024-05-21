@@ -1,0 +1,7 @@
+Example command to generate cmake build files.
+
+cd some-repo-fw
+mkdir build
+cd build
+cmake -DCMAKE_TOOLCHAIN_FILE="cmake/toolchain-arm-none-eabi.cmake" -DTOOLCHAIN_PREFIX="C:/installations/arm/gnu-arm-embedded.7-2018-q2-update.win32" -DCMAKE_BUILD_TYPE="Release" -DREGION="US915" -G "MinGW Makefiles"  ..
+

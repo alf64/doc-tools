@@ -1,0 +1,99 @@
+############ Types of Qt applications/projects ############
+File -> New Project... allows you to select project type. Let's focus on Qt application type.
+There are 3 Qt apps types possible:
+1. Qt Widgets App - app with GUI designed in C++ form (GUI classes provided by Qt, i.e.: QWidgets, QButton)
+2. Qt Console App - plain app for cmd (no GUI)
+3. Qt Quick App - app with GUI designed in QML and logic written in C++. Modern way to distinguish Front-End (GUI) and Back-End (logic).
+4. Qt Quick App Compat - same as Qt Quick App, but for older Qt (lower than 6)
+
+
+
+
+############ Qt Quick App (Compat) ############
+Please refer to 'Integrating Qml and C++' in the Help section of QtCreator for the example project explaining the integration between those.
+
+
+
+
+############ How-to deploy the Qt application for Windows OS ############
+------------------ Qt Console App or Qt Widget App --------------------------
+Assumption is that you build the app for Windows machine.
+Normal development compromises of Building and Running the app within the QtCreator.
+If 'Shadow Build' is selected in the build options then the resulting build files will be build alongside the project dir (not inside it). If this option is disabled, then build is created in the same directory as project.
+In the resulting files you will find .exe file with the application. However running it outside of QtCreator will fail, since it heavily depends on external .dll files, plugins and other things offered by Qt and QtCreator.
+You must deploy the application to use it outside of Qt framework. Deploying means providing all dependencies (other files, like .dll) with app. Or there is an option to try linking most things statically.
+The fastest approach is to add dependencies with .exe. How to get all of them?
+Find 'Deploying Qt Applications' article in the Help section for more info. Navigate to 'Qt for Windows' section link at the end for deploying on Windows info.
+In short: use windeployqt tool.
+Short instruction:
+1. Open cmd.exe
+2. Go to <qt-install-dir>/<qt-ver->/<mingw-ver>/bin/ (example path: C:\installations\Qt\Qt5.14.2\5.14.2\mingw73_64\bin)
+3. Call qtenv2.bat
+This will load qt environmental variables to your current cmd session. They may be needed for running tools from this directory. Also these tools are now in PATH on your current session, you can use them from any directory. windeployqt.exe is the tool you desire.
+4. Go to the dir where your app release .exe is (a build directory when qtcreator created it) and call: windeployqt.exe <your-app.exe>
+Example:
+cd C:\installations\Qt\Qt5.14.2\Examples\Qt-5.14.2\gui\build-analogclock-Desktop_Qt_5_14_2_MinGW_64_bit-Release\release
+windeployqt.exe analogclock.exe
+5. All missing dependencies will be put to this directory and app .exe should now be able to start without QtCreator.
+6. Some files may be deleted from the build directory, since they are intermediate files not needed for execution (i.e. .o, .obj files)
+
+------------------ Qt Quick App (QML) --------------------------
+Deployment looks similiar to the above, with the following differences:
+1. You have to manually copy the .qml files from sources to the build directory.
+2. You have to call windeployqt.exe tool with qml dir provided.
+Example call: windeployqt --qmldir . cpp-qml-example.exe
+Also please note how you reference .qml files in your app (the dir structure)
+I.e.: my main.cpp is referencing the .qml file in the following way: const QUrl url(QStringLiteral("qrc:/main.qml"));
+And the main.qml file in my sources resides in the same dir where main.cpp is.
+Dunnp if this is crucial to the windeployqt when copying qml files and providing dir to it. In more complex qml trees you may be required to re-create such tree in the build directory or something.
+Above example worked and i was able to deploy qml app. App was expecting .qml to be in the same dir, and i simply copied qml where the .exe was.
+
+
+
+
+############ How-to link libraries with your project (lib<library-name>.a files and .lib files) ############
+In the project tree right-click on the project name at the top and select Add Library
+You can add external library or system libraries and provide include directories for them.
+
+
+
+
+############ Configuring project (with qmake and .pro and .pri files) ############
+Project file (.pro) is written in qmake language. You may think about it as a kind of cmake, but for Qt.
+Refer to the 'qmake manual' in help section to see available semantics and specifics variables.
+
+I.e. if u want to pass global #define TESTMAC=1 to the whole project add the following to the .pro file:
+DEFINES += TESTMAC=1
+This will pass -DTESTMAC=1 to the C compiler, making it a global #define TESTMAC=1
+
+Wanna pass include directory where the compilers should search for .h files?
+INCLUDEPATH += c:/msdev/include                  // adds c:/msdev/include as include dir
+INCLUDEPATH += $$PWD/                            // adds current .pro (or .pri) file directory to the include dir
+
+Very important is CONFIG variable. Allows you to configure so many things for the project.
+Specifies project configuration and compiler options. The values are recognized internally by qmake and have special meaning.
+Examples:
+CONFIG += cmdline                               // application is not a QT application but a command line one, this will include typical libs and defines for compiler
+
+Another examples of important variables:
+SOURCES += \
+    main.cpp                                    // list of sources for the project
+SOURCES += \
+    $$PWD/alarm/alarmcontroller.cpp \
+    $$PWD/application.cpp                       // list of sources for the project
+HEADERS += \
+    $$PWD/alarm/alarmcontroller.h \
+    $$PWD/application.h \                       // list of header files
+    
+What is .pri file? It's also a file containing rules written in qmake language, just like .pro file.
+However .pri file is meant to be included by .pro file to add its contents into .pro file. Just like Makefiles include .make files.
+Example inclusion from the .pro file:
+include(src/drivers/lcd/lcd.pri)                        // this will include lcd.pri file that may add SOURCES, HEADERS and other rules to build driver for LCD
+
+How to check if variable holds some sensitive words and perform specific action:
+CONFIG += add-lcd-driver
+contains(CONFIG, add-lcd-driver) {
+    include(src/drivers/lcd/lcd.pri)
+} else {
+}
+

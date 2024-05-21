@@ -1,0 +1,200 @@
+Useful git commands / hints
+
+# Checks repo status
+git status
+
+# Check the difference between local and remote tracking
+git diff
+# inspect submodules changes also
+git diff --submodule=diff
+# Checking the difference of particular files or directories with files
+git diff <file1> <file2>
+# Saving diff to file
+git diff > <filename-with-diff>
+# Applying diff from file (put file in repo)
+git apply <filename-with-diff>
+
+# Creates new branch from current branch and checks out to it
+git checkout -b <new-branch-name>
+
+# Fetches changes from origin
+# (let's git know about changes on remote - updates metada, does not make any local changes to the sources)
+git fetch
+
+# Merges changes from other branch into current branch
+git merge <branch-name>
+Examples:
+# Merge changes made in remote branch1 (assuming git fetch has been called first so such branch exists on remote) to the actual branch
+git merge origin/branch1
+# Merge changes made on local branch2 to the actual branch
+git merge branch2
+
+# Rebase to branch
+git rebase <branch-name>
+# Example rebase to master branch: git rebase origin/master
+
+# Pulls changes (git fetch + git merge)
+git pull
+
+# Push changes to remote
+git push origin HEAD:<name-of-the-remote-branch-to-push-to>
+# Push changes and set to track the remote
+git push --set-upstream origin HEAD:<name-of-the-remote-branch-to-push-to>
+
+# Adds all locally changed files as candidates for commit
+git add -A
+# Add only specific file:
+git add <path-to-locally-changed-file>
+
+# Commits changes (txt editor shall bring up allowing for putting in commit message)
+git commit
+# commit changes with message given in cmd
+git commit -m "<commit-message>"
+# commit with author different than in your .gitconfig
+git commit --author="<author-name, i.e. Josh Jobs josh@jobs.com>"
+# amend more changes to the previous commit (assuming it's still local commit not pushed to remote)
+# can also be used to just change commit message
+git commit --amend
+
+# Reset changes
+# Brings added changes (marked with git add) to the previous state (just changed content / local changes)
+git reset
+# resets local commits and brings them back as local changes
+git reset --hard
+# or this one resets changes to one commit before. You can change '1' to any other number and reset more commits
+git reset HEAD~1
+# reset changes and get rid of local changes (not commited) also
+git reset --hard HEAD~1
+
+################################################################################################
+
+# Add submodule to your repository.
+git submodule [-b <branch-for-submodule-initial-commit>] [--name <submodule-name>] add <http-or-ssh-address-of-repo-to-add-as-submodule> [<path-for-submodule>]
+# Example of adding DbConnector repo as submodule: git submodule add https://github.com/chaconinc/DbConnector
+# Example of adding DbConnector repo as submodule under dbc dir: git submodule add https://github.com/chaconinc/DbConnector dbc
+# Example of adding lorawan_test_tools submodule under src/lorawan_test_tools directory:
+git submodule add -b develop --name lorawan_test_tools git@gitlab.example.com:example/lorawan/lorawan-test-tools.git src/lorawan_test_tools
+
+# Updates and inits submodules within repository, and submodules within these submodules (--recursive)
+# This also brings submodules to their original commits (resets local commits and brings them back as local changes)
+git submodule update --init --recursive
+
+# To add submodule using TortoiseGit:
+# 1. right-click on a main repo dir (free place inside it) and select TortoiseGit -> Submodule Add... You must do this in the highest level directory of a repo. (@see submodule-add-tortoisegit.png)
+# 2. Provide the path to the repo that shall be used as submodule
+# 3. Provide a name of the folder where the submodule shall be placed (it may be different than submodule repo name) - important: do not create the dir for submodule first. It will be created automatically.
+# 4. Select 'Force' option and click OK
+
+# When while trying to create a submodule you get the following erro: transport 'file' not allowed
+# To solve it, run:
+git config --global protocol.file.allow always
+# This should add the following entry in you .gitconfig file:
+[protocol "file"]
+	allow = always
+
+################################################################################################
+
+# Delete branch (locally only)
+git branch -D <branch-name>
+# Delete branch (on remote)
+git push origin --delete <name-of-the-branch-to-delete>
+
+# How to re-name branch (locally, and replacing old with new on remote)
+git branch -m <new-name>
+# Then you can simply push it to remote...
+git push origin -u <branch-name>
+# ... and delete the old remote branch
+git push origin --delete <name-of-the-branch-to-delete>
+# If you had a merge request for old name branch, when you delete it on remote, merge request will be deleted too
+
+# Get rid of remote branches data in repository upon deleting them by the remote (i.e. via GitLab) and deleting them locally (git branch -D)
+# (Yes it's possible that such remote branch is still visible in repo)
+git fetch --prune --all
+
+# List all branches (even remotes)
+git branch -a
+# List local branches
+git branch
+# List remote branches
+git branch -r
+
+# Set your local branch to track remote branch (upon pushing it is cool to see with git status if there is a difference between local and remote, of course if git fetch has been called)
+git branch --set-upstream-to=origin/<remote-branch-name, i.e. master>
+
+# Interactive rebase (allows for picking (p) the base commit and squash (s) commits after it)
+git rebase -i HEAD~<number of commits before the actual head to get back to and pick as base commit>
+# interactive message will pop up, mark commit to pick with p, mark commits to squash as s, edit commit message (one msg for all squashed commits)
+
+# Stashing changes
+# You can store your local uncommitted changes using mechanism called stash. Changes are stored locally in your git repository.
+# The following stashes the changes:
+git stash
+# You can stash almost as many changes as you want, each one is stored into separate stash.
+# To show all stashes you have:
+git stash list
+# stash{0} is always the recently pushed stash, the newest one.
+# To see which files stash affects:
+git stash show stash{<stash-index, i.e. 0>}
+# To see the diff of the most newest stash:
+git stash show -p
+# To see any stash diff call:
+git stash show -p stash{<stash-index>}
+# To apply the stash onto your repo
+git stash apply stash{<stash-index>}
+# To delete the most newest stash
+git stash drop
+# To delete any stash
+git stash drop stash{<stash-index>}
+# To delete all stashes
+git stash clear
+# To stash changes and assign a name to a stash for easier reference
+git stash push -m "<name-of-the-stash>"
+# To stash only specific file
+git stash push <path to file> <path to next file> <path to next file> -m "<name-of-the-stash>"
+# To stash also untracked repository files (by default they are not being stashed)
+git stash -u
+# To apply the stash and delete it
+git stash pop stash{<stash-index>}
+
+################################################################################################
+# Deleting a tag (locally)
+git tag -d <tag-name>
+# or
+git tag --delete <tag-name>
+# Deleting a tag (remote)
+git push origin --delete <tag-name>
+# Updating tags from remote
+git fetch
+# or
+git fetch --tags --all --force
+# List local tags
+git tag
+# or
+git tag -l
+# How to list remote tags:
+git ls-remote --tags
+# List tags along with commit SHA:
+git show-ref --tags
+# Search/list tags that match pattern
+git tag -l "<pattern>"
+# Creating lightweight tags on current commit
+git tag <tag-name>
+# Creating lightweight tags on selected commit
+git tag <tag-name> <commit-SHA>
+# Checking out tagged commit
+git checkout <tag-name>
+# Pushing the tag to remote:
+git push origin <tag-name>
+# How to push all local tags to remote
+git push --tags
+################################################################################################
+
+
+# Cleaning
+# Clean the repository from any added files
+git clean -xdf
+
+# Inspecting log
+git log
+# Inspecting sophisticated log with branch diagram (adog = --All --Decorate --Oneline --Graph)
+git log --all --decorate --oneline --graph

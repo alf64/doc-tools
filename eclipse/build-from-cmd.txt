@@ -1,0 +1,51 @@
+There is a possibility to build Eclipse CDT Managed C/C++ projects from command line.
+
+Prerequisites:
+1. MinGW (c/c++ compilers, linker, make - whole c/c++ developer toolchain) installed and MinGW\bin added to system PATH variable.
+Check if make.exe, gcc.exe, g++.exe can be called from Windows command line.
+This is needed because Eclipse calls make, rm, gcc when building.
+2. Eclipse for C/C++ installed. (up-to-date version for now is: eclipse-cpp-2021-12-R-win32-x86_64, so this tutorial is true for this version)
+If MinGW is installed and added to PATH, Eclipse for C/C++ will detect it automatically.
+In Eclipse installation directory there will be eclipsec.exe, which is meant to be called for cmd line builds.
+Linux versions of Eclipse does not have it, they simply use eclipse.exe.
+
+Running cmd line build.
+General call is:
+eclipsec.exe
+--launcher.suppressErrors
+-nosplash
+-application org.eclipse.cdt.managedbuilder.core.headlessbuild
+-data <path-to-your-eclipse-workspace-where-general-project-metadata-are-stored>
+-cleanBuild <proj-name>/<build-configuration, i.e Release>
+
+For example:
+eclipsec.exe
+--launcher.suppressErrors
+-nosplash
+-application
+org.eclipse.cdt.managedbuilder.core.headlessbuild
+-data C:\Users\Bartosz\dev\workspaces\eclipse-cpp-2021-12-R-workspace
+-cleanBuild HelloWorld/Release
+
+If you don't pass build-configuration, all configurations will be build subsequently.
+
+Important:
+It is mandatory to put path to workspace, even if project resources (i.e. code) is not there. Metadata in workspace contains list of projects with their names.
+(so at least once the project should be opened in GUI and registered within workspace for this to work)
+
+Useful other command line options:
+* Import projects:                       -import     {[uri:/]/path/to/project}
+* Import all projects in the tree:       -importAll  {[uri:/]/path/to/projectTreeURI}
+* Build projects / the workspace:        -build      {project_name_reg_ex/config_name_reg_ex | all}
+* Clean build projects / the workspace:  -cleanBuild {project_name_reg_ex/config_name_reg_ex | all}
+* Add Include path to build:             -I          {include_path}
+* Add Include file to build:             -include    {include_file}
+* Add preprocessor define to build:      -D          {prepoc_define}
+* Replace environment variable in build: -E          {var=value}
+* Append environment variable to build:  -Ea         {var=value}
+* Prepend environment variable to build: -Ep         {var=value}
+* Remove environment variable in build:  -Er         {var}
+* Replace a tool option value:           -T          {toolid} {optionid=value}
+* Append to a tool option value:         -Ta         {toolid} {optionid=value}
+* Prepend to a tool option value:        -Tp         {toolid} {optionid=value}
+* Remove a tool option:                  -Tr         {toolid} {optionid=value}

@@ -1,0 +1,6 @@
+When in the repository you have changes due to CRLF, the following fixed the issue for me (assuming .gitattributes is in the repo):
+1. rm .gitattributes
+2. git add -A
+3. git reset
+4. git checkout -- . (this is to restore .gitattributes)
+And in the end your repo should be without any changes.

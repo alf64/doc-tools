@@ -1,0 +1,31 @@
+############################
+#### Tips on using ssh #####
+############################
+
+
+
+Connecting to host:
+ssh <username>@<ip>
+Example: $ ssh root@10.255.0.115
+
+
+
+When you observe the following error when trying to connect:
+
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@    WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!     @
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!
+Someone could be eavesdropping on you right now (man-in-the-middle attack)!
+It is also possible that a host key has just been changed.
+The fingerprint for the ED25519 key sent by the remote host is
+SHA256:VTg1HGJr6OJOBSwLE7xvs484eKYT1zrGBFO5vtDYrGw.
+Please contact your system administrator.
+Add correct host key in /c/Users/Bartosz/.ssh/known_hosts to get rid of this message.
+Offending ECDSA key in /c/Users/Bartosz/.ssh/known_hosts:12
+Host key for 10.255.0.115 has changed and you have requested strict checking.
+Host key verification failed.
+
+You should clean-up your known_hosts file from the fingerprints associated for the ip you are trying to connect.
+To do that, call the following: ssh-keygen -R <ip>
+Example: ssh-keygen -R 10.255.0.115

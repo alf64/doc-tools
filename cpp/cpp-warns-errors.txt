@@ -1,0 +1,37 @@
+Warnings and Errors for C/C++ programming explained.
+
+
+
+1. file.c:84:37: warning: passing 'volatile uint8_t' to parameter of type 'uint8_t ' (aka 'unsigned char *') discards qualifiers [-Wincompatible-pointer-types-discards-qualifiers]
+This warning pops up when you pass volatile uint8_t variable as an argument to a function and this function in its declaration has not marked the argument as volatile.
+There is an implicit cast from volatile uint8_t to uint8_t performed and by a warning compiler informs you about it.
+You can get rid of the warning by casting explicitly to uint8_t when passing the argument, telling the compiler that you know that you are getting away a volatile attribute in a function.
+It is ok if a variable is not supposed to change by an external process while such function is executed.
+However if a variable may change during the function execution, such change may not be noted by a function since it probably optimized out the volatile qualifier within it.
+If you care for volatile attribute within this function, you should add volatile to an argument in a function declaration.
+
+
+
+2. error: invalid use of incomplete type 'class <classname>'
+You are missing #include <classname>
+Example:
+error: invalid use of incomplete type 'class QQmlContext'
+missing include is: #include QqmlContext
+
+
+
+3.
+somefile.h:61: error: ‘constexpr’ needed for in-class initialization of static data member ‘const double SomeClass::RECIPE_TEMP_INVALID’ of non-integral type [-fpermissive]
+   61 |     static const double RECIPE_TEMP_INVALID = -1.00;
+   
+This happens for some types when you create static const initialization in the .h file. Example types that create this problem: char[], double.
+To fix it you have to:
+- add the following in the .cpp file: constexpr const double RecipePage::RECIPE_TEMP_INVALID;
+- in .hpp file change the initialization to the following: static constexpr const double RECIPE_TEMP_INVALID = -1.00;
+
+Array example:
+- .cpp file shall contain: constexpr const uint8_t SerialDeviceTester::WrongSlipRgpFrame1[];
+- .hpp file shall contain:
+     static constexpr const uint8_t _jboxWrongSlipRgpFrame1[] = {
+            SLIP_ESC, 0xAA, SLIP_END
+    };

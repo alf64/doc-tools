@@ -1,0 +1,16 @@
+How to download plugins from eclipse marketplace, i.e.: https://marketplace.eclipse.org/content/cmake-editor
+
+There is now way now to download plugins as .zip as was previously. You have to create the .zip by yourself by downloading the plugin using eclipse.exe providing it plugin url.
+Then this plugin can be installed from Eclipse via Help -> Install New Software...
+
+1. Get the url of the plugin of your choice from eclipse marketplace, i.e. (see plugin-url-loc.png):
+https://raw.githubusercontent.com/15knots/cmakeed/master/cmakeed-update/
+
+2. Create the directory where you will download the plugin, i.e.: C:\Users\Bartosz\dev\temp\eclipse\cmakeed-offline-mirror
+
+3. Call eclipse in this way:
+eclipse.exe -nosplash -application org.eclipse.equinox.p2.metadata.repository.mirrorApplication -source https://raw.githubusercontent.com/15knots/cmakeed/master/cmakeed-update/ -destination C:\Users\Bartosz\dev\temp\eclipse\cmakeed-offline-mirror
+eclipse.exe -nosplash -application org.eclipse.equinox.p2.artifact.repository.mirrorApplication -source https://raw.githubusercontent.com/15knots/cmakeed/master/cmakeed-update/ -destination file:///c:/jrebel-local-mirror/
+
+4. In the directory the appropriate plugin files will be created.
+5. .zip these files (IMPORTANT: zip the files/content, not the directory, .jar files must be in the root of .zip) and install it from Eclipse via Help -> Install New Software...

@@ -1,0 +1,14 @@
+[user]
+	name = alf64
+	email = alf64gordon@gmail.com
+	username = alf64
+[core]
+    autocrlf = true
+[protocol "file"]
+	allow = always
+[safe]
+	directory = D:/uCpen/alf64/gh/neu/repos/pc-qt-tools
+	directory = D:/uCpen/alf64/gh/neu/repos/pc-qt-tools
+	directory = D:/uCpen/alf64/gh/neu/repos/pc-tools
+	directory = D:/uCpen/alf64/gh/neu/repos/pic-tools
+	directory = D:/uCpen/alf64/gh/neu/repos/py-tools

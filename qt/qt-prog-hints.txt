@@ -1,0 +1,73 @@
+##################################################################################
+############ Hints regarding programming in C/C++ within Qt framework ############
+##################################################################################
+
+
+
+
+###### Using Q_OBJECT macro ######
+We use this macro in a private section of a class for which we want to enable usage of specific Qt capabilities (called 'Qt meta object system'), like: slots and signals, Q_ENUMS, etc.
+A class that uses such macro must deriver from QObject class.
+Usually this macro is used at a beginning of a class (without any specifier like private, public or protected, because in c++ when no specifier is given the default is used: private).
+Example:
+class Application : public QObject
+{
+    Q_OBJECT
+public:
+    functions()
+protected:
+    functions()
+private:
+    functions()
+
+slots:
+
+signals:
+}
+
+
+
+
+###### Q_PROPERTY ######
+We use this macro in a private section of a class (just like Q_OBJECT) for which we want to expose some members (and functions to alter it) to the qml.
+Using this macro we can integrate qml (gui) with the C++ logic.
+Type the following in the Help section of the QtCreator to get extensive info and example: 'Integrating QML and C++'
+Example:
+class BackEnd : public QObject
+{
+    Q_OBJECT
+    // (private) m_car_name will be exposed in QML as a carName
+    Q_PROPERTY(QString carName READ getCarName WRITE setCarName NOTIFY carNameChanged)
+public:
+    explicit BackEnd(QObject *parent = nullptr);
+    QString getCarName() const;
+    void setCarName(const QString &name);
+private:
+    QString m_car_name;
+signals:
+    void carNameChanged();
+};
+Example details:
+- exposing m_car_name as carName and exposing functions to READ it (getCarName) and WRITE it (setCarName).
+- NOTIFY function allows QML to know when the value was changed.
+- in QML you dont call such functions explicitly, they are called implicitly when you use '=' operator in qml to read/write carName parameter to some field in QML.
+
+
+
+
+####### slots and signals ######
+This mechanism in Qt is used to trigger functionality on events. It is commonly used instead of callbacks.
+Signals - functions that can be emitted
+Slots - functions that can receive a signal
+connect() function allows to connect signal to a slot.
+'emit' keyword allows to emit signals. On emit, all connected slot functions are called.
+Important!!! Signal and slot function must have matching prototypes/signatures (same arguments and returning type). But the slot function can have less arguments if it does not need them.
+When signal function is emitted, the slot function is called with the arguments provided in signal function.
+Example of connection of signal from scrollBar object to the slot of label object:
+ QLabel *label = new QLabel;
+ QScrollBar *scrollBar = new QScrollBar;
+ QObject::connect(scrollBar, SIGNAL(valueChanged(int)),
+                  label,  SLOT(setNum(int)));
+when 'emit valueChanged(int)' will be performed, setNum(int) will be called, with the same arguments as provided to valueChanged(int).
+Important!!! In connect we do not specify functions with their arguments name, just argument type!
+See 'Signals & Slots' in Help section of Qt for more info.

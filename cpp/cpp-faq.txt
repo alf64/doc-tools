@@ -1,0 +1,226 @@
+Hints for C/C++ programming
+
+#################### C++ ####################
+1. File extensions.
+For C++ source file extensions MUST be: .cpp. Otherwise you get 'fatal error: iostream: No such file or directory' during compilation.
+Headers can be .h or .hpp
+
+
+
+2. Almost each file should have '#include <iostream>' and 'using namespace std' at the beginning. Otherwise C++ syntax is not recognised.
+
+
+
+3. Constructors and its inheritance.
+Constructors are functions that:
+ - have the same name as a class, i.e.: Foo()
+ - does not return anything, even void
+ - constructors are always called when the instance of a class is created
+Default constructors does not take any arguments (just void).
+Constructors can be overloaded - each class can have multiple constructors. (each one may have different arguments).
+The choice which constructor to call is made on the basis of what arguments has been passed when the constructor has been called. (just like for overloaded functions)
+Constructors are not inherited.
+Derived class must have its own constructor. When such constructor is called, first implicitly the default constructor of base class is called.
+If you need other base class constructor to be called, you have to call such constructor in the derived class constructor initializer list.
+
+
+
+4. Destructors and virtual destructors
+Destructors are functions that:
+ - have the same name as a class, precedence with ~, .i.e.: ~Foo()
+ - does not return anything, even void
+ - destructors are always called when the instance of a class is deleted
+Virtual destructors are destructors with some kind of virtual method capabilities - it is called along with derived class destructor (actually after it)
+when object of a derived class is accessed with base class pointer.
+// Example:
+#include <iostream>
+
+class FooBase {
+public:
+    ~FooBase() { std::cout << "Destructor of FooBase" << std::endl; }
+};
+
+class Foo : public FooBase {
+public:
+    ~Foo() { std::cout << "Destructor of Foo" << std::endl; }
+};
+
+class BarBase {
+public:
+    virtual ~BarBase() { std::cout << "Destructor of BarBase" << std::endl; }
+};
+
+class Bar : public BarBase {
+public:
+    ~Bar() { std::cout << "Destructor of Bar" << std::endl; }
+};
+
+int main() {
+    FooBase * foo = new Foo;
+    delete foo; // deletes only FooBase-part of Foo-object;
+
+    BarBase * bar = new Bar;
+    delete bar; // deletes complete object
+}
+
+Output:
+Destructor of FooBase
+Destructor of Bar
+Destructor of BarBase
+
+
+
+5. Initializer list.
+Is a list of fields to initialize in the class constructor.
+Fields needs to be initialized with (), i.e. var1(0xFF)
+Fields needs to be initialized in the same order as they are declared in the class.
+It's not mandatory to initialize anything in such list. You can i.e. do it within constructor.
+It's not obligatory to initialize everything in initializer list, you can initialize selected fields only.
+It's recommended to initialize trivial fields in an initializer list (trivial = ones without a constructor, like basic types: int).
+Other (complex = the ones with contructor) fields present in the class will be initialized with default constructor.
+Example: you have QTimer m_timer; // it will be initialized with QTimer(parent=NULL), since it's the default constructor for it.
+
+
+
+6. Public inheritance.
+You will get "A is not an accessible base of B" if you try to use function from a class (A) that derived this function from base class (B).
+This is because by default the inheritance is private, i.e.:
+class A : B
+means that A inherits from B and you can use functions from B within A class however you can't do this from outside.
+I.e.:
+A* object_a = new A();
+object_a->function_from_b_class(); // will give you "A is not an accessible base of B" error
+To fix this you have to make inheritance public:
+class A : public B
+
+
+
+7. Public, protected, private specifiers.
+Public - makes fields of a class accessible everywhere inside & outside of a class.
+Private - (default when nothing specified) - makes fields of a class accessible:
+ - only by this class and its methods or by friends of such class or methods
+ - these fields are not inherited by derived class.
+Protected -  same as Private, but allows for inheritance.
+
+
+
+8. Default parameters/arguments.
+In C++ functions can have default parameters, which means user have no need to pass such argument to a function if he want to keep the default value.
+Important: default parameters shall be indicated in a function declaration, not definition. Otherwise you will get compilation error.
+I.e. in class1.h you have a declaration of: function1(int a, int b = 5); The defalt parameter is b, it takes value of 5 by default.
+In class1.c file this function should be defined simply as: function1(int a, int b){<your-definition>} Please note missing 'b = 5'.
+Default parameters shall always be last parameters of the function, never first or middle.
+I.e. correct is: function1(int a, int b = 5, int c = 10);
+I.e. not correct is: function1(int a, int b = 5, int c);
+
+
+
+9. Using volatile, volatile with struct, volatile pointers and pointers to volatile
+----- what's volatile -----
+volatile tells compiler that it should not make any optimizations when accessing the resource, i.e. variable (volatile uint8_t var1;)
+it should always read it from the memory where it resides, not from cached value somewhere in its internal registers
+this is crucial when the resource can be changed outside of cpu main thread, i.e. can be changed in an interrupt
+
+----- pointers to volatile and volatile pointers----- 
+volatile uint8_t *foo; // tells the compiler the memory being pointed to (data the pointer is pointing to) is volatile (can change outside of main thread)
+uint8_t * volatile foo; // pointer itself is volatile (pointer can change outside of main thread)
+volatile int* volatile ptr; // memory being pointer to is volatile and ptr itself is volatile
+Be careful when pointing to volatile variable - always use a pointer with volatile:
+volatile int myVolatileInt;
+int* ptr = &myVolatileInt; // Bad idea! (cpp compiler may produce warning that you loose volatile)
+volatile int myVolatileInt;
+volatile int* ptr = &myVolatileInt; // Much better!
+
+----- volatile and structs -----
+if you declare a structure with volatile then all its members will also be volatile
+you can also declare volatile for particularly selected fields of a structure
+
+
+
+10. Using extern
+----- Basics -----
+Declaring variable with 'extern' tells the linker that this variable is defined somewhere else (i.e. in the other source file, other .o file).
+Example:
+main.c: extern int someVar;
+file1.c: int someVar;
+When you use someVar in main.c, the someVar from file1.c will be used.
+When someone wants others to use its global variables, it oftens declares them extern in .h file.
+Example:
+file1.c: int someVar;
+file1.h: extern int someVar;
+main.c: #include "file1.h"
+Now it's the same as in the previous example.
+
+----- Using extern in local scope -----
+It is possible to use extern variable in a local scope, i.e. in one function only.
+Example:
+void f() {
+    extern int someVar;
+}
+Linker will link someVar from the other resource instead of creating new local someVar variable here.
+
+
+
+11. Using const
+----- Typical usage -----
+Typically we use const to mark variables that should not be changed.
+Example:
+const int x = 5; // compiler will give error if later in the code someone would try to write i.e.: x = 2;
+
+----- Usages in function prototypes -----
+Examples:
+uint8_t Func1(const uint8_t* x) // const: function declares/promises that it will not change value pointed by x
+{
+    // value under y shall not be changed (1st const), y pointer shall not be moved (i.e.: incremented) or re-assigned (2nd const)
+    const uint8_t* const y = x;
+}
+
+const uint8_t* Func1();
+What the above means? It means that function returns the pointer that: the value under the uint8_t pointer shall not be altered.
+
+const uint8_t& Func1() const
+What the above means? It means that function returns the reference that the value under the reference cannot be altered.
+The most common use. It's to prevent someone to change the referenced value.
+
+----- C++ specific usage - marking functions as const -----
+uint8_t Func1() const
+Common usage in C++, marking the function as const.
+What the above means?
+ - Function declares/promises that it does not alter any members of the object used to invoke it.
+How is this achieved?
+See the example below:
+C++ class methods (that are not static) have an implicit 'this' parameter which is placed before all the explicit ones. So a function declared within a class like this...:
+class C {
+  void f(int x);
+}
+...You can imagine really looks like this:
+  void f(C* this, int x);
+Now, if you declare it this way:
+  void f(int x) const;
+It's as if you wrote this:
+  void f(const C* this, int x);
+You can see that 'this' (of type: class C) became const.
+This means members of 'this' accessed by the function cannot be altered.
+Code example:
+class Foo
+{
+  int x;
+  int GetX() const {return x;}
+  void SetX(int i_x)  {x = i_x;}
+};
+Since c++ compiler implicitly adds 'this' paramater, you can think about this functions like this:
+int GetX(const Foo* this) {return this->x;}
+void SetX(Foo* this, int i_x) {this->x = i_x;}
+You can see that SetX() changes the value of a member (x), so it cannot be declarted with const.
+However GetX() does not change any members, therefore it can be declared as const.
+You should always mark functions as const if they do not change values of members. Because such const functions can be called by const objects. Non-const functions cannot.
+Example:
+const Date birthday(7, 3, 1969);
+class Date{
+    int get_month;
+}
+birthday.get_month(); // ERROR! Calling non-const function on const object
+class Date{
+    int get_month() const;
+}
+birthday.get_month(); // GOOD! Calling const function on const object.
