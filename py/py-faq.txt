@@ -1,0 +1,23 @@
+###################################
+#####   Useful python hints   #####
+###################################
+
+
+
+-------------- Python Launcher - Selecting python version, listing available pythons --------------------
+If you have more than one version of python installed, use python launcher ('py') to select the one you want.
+# See help of python launcher
+py --help
+# List installed pythons
+py --list
+# Call your python script with python 2 (assuming python 2 is installed)
+py -2 <your-python-script>
+# Call your python script with python 3 (assuming python 3 is installed)
+py -3 <your-python-script>
+# Call your python script with particular version of python (in this case: 3.9 - assuming you have it installed)
+py -3.9 <your-python-script>
+
+---------------------------------------------------------------------------------------------------------
+
+
+
