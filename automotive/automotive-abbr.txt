@@ -3,52 +3,107 @@ Automotive abbreviations
 ########################
 
 --- 0 ---
-0-Series      = Null series. (a stage of the cars prototype production).
+0-Series            = Null series. (a stage of the cars prototype production).
 
 
 
 --- A ---
-ASPICE        = Automotive SPICE
+ASPICE              = Automotive SPICE
+ASG                 = ASG = from German 'Anzeigesteuergerät' = which means 'display control unit'. A term used in BAP protocol to describe the device that can display information. Example devices: cluster, infotainment.
 
 
 
 --- B ---
-* BP          = Base Pracitise
+* BP                = Base Pracitise
+* BAP               = BAP = from German 'Bedien und AnzeigeProtokoll' = which means: 'control and display protocol'.
+                    Protocol for communication between control unit (FSG) and display unit (ASG). Example: buttons on driving wheel to change radio stations are handled over BAP.
+                    BAP physically is usually handled over CAN.
+
+
+
+--- C ---
+* CAN               = CAN = Controller Area Network - communication bus, a standard in automotive industry.
+* Cluster           = a device that displays speed and other basic information for the driver.
+
+
+
+--- D ---
 
 
 
 --- E ---
-* EOL         = End Of Line inspection
-* EOL         = End of Life
+* EOL               = End Of Line inspection
+* EOL               = End of Life
+
+
+
+--- F ---
+* FSG               = FSG = from German 'FunktionsSteuerGerät' = which means: 'functional control unit'. A term used in BAP protocol to describe the device that has no display capabilities, but is used for controlling.
+                    Example device: buttons on driving wheel.
+
+
+
+--- G ---
+
+
+
+--- H ---
+* HUD               = HUD = Head Up Display. The device that displays information on windscreen.
+
+
+
+--- I ---
+* Infotainment      = the device at car's dashboard with LCD screen. Used for displaying information in a car (radio station, main menu, navigation).
 
 
 
 --- K ---
-* KL15        = ignition switch position #2 (on)
-* KL_30       = + connector (KLemmen) of the car's battery (typically 12VDC (or 24VDC) on this at all times)
-* KL_31       = - connector (KLemmen) of the car's battery
-* KL50        = is ignition position #3 (start)
-* KLR         = means ignition switch position #1 (Accessory) In this mode the radio/IVI, windows, etc will be powered on, but the traction motor will not be enabled (ICE or EV), there may be limited HVAC (Heating Ventilation and Air Conditioning) due to the HVAC compressor, and the heater not being powered.
+* KL15              = ignition switch position #2 (on)
+* KL_30             = + connector (KLemmen) of the car's battery (typically 12VDC (or 24VDC) on this at all times)
+* KL_31             = - connector (KLemmen) of the car's battery
+* KL50              = is ignition position #3 (start)
+* KLR               = means ignition switch position #1 (Accessory) In this mode the radio/IVI, windows, etc will be powered on, but the traction motor will not be enabled (ICE or EV), there may be limited HVAC (Heating Ventilation and Air Conditioning) due to the HVAC compressor, and the heater not being powered.
+* Kombi             = a cluster (standard car's device that display speed). This abbreviation is from German word: 'Kombiinstrument'.
+
+
+
+--- L ---
+* LHD               = LHD = Left Hand Drive = a car with the driving wheel on the left side. A standard in USA and most European countries.
+
+
+
+--- M ---
+* MIB               = probably a cluster (standard car's device that display speed)
+* MMI               = Multi Media Interface = Audi name for Infotainment
 
 
 
 --- P ---
-* PVS         = Produktionsversuchsserie. (a stage of the cars prototype production). Meaning: Production test series.
+* PVS               = Produktionsversuchsserie. (a stage of the cars prototype production). Meaning: Production test series.
+
+
+
+--- Q ---
+
+
+
+--- R ---
+* RHD               = RHD = Right Hand Drive = a car with the driving wheel on the right side. A standard in United Kingdom.
 
 
 
 --- T ---
-* TEP         = TEchnical Process
+* TEP               = TEchnical Process
 
 
 
 --- U ---
-* UML         = Unified Modelling Language
+* UML               = Unified Modelling Language
 
 
 
 --- V ---
-* V-model     = a kind of system development lifecycle, methodology of work
-* VFF         = Vorserien-Freigabe-Fahrzeug. (a stage of the cars prototype production). Meaning: Approval before series production vehicles.
+* V-model           = a kind of system development lifecycle, methodology of work
+* VFF               = Vorserien-Freigabe-Fahrzeug. (a stage of the cars prototype production). Meaning: Approval before series production vehicles.
 
 
