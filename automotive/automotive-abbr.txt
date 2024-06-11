@@ -10,6 +10,8 @@ Automotive abbreviations
 --- A ---
 ASPICE              = Automotive SPICE
 ASG                 = ASG = from German 'Anzeigesteuergerät' = which means 'display control unit'. A term used in BAP protocol to describe the device that can display information. Example devices: cluster, infotainment.
+Apple CarPlay       = app built-in into the Infotainment. Made by Apple company. Allows you to connect your iPhone to the Infotainment and use some of the iPhone capabilities in your car (making phone calls, using your internet connection for navigation).
+Android Auto        = app built-in into the Infotainment. Pretty much similiar to Apple CarPlay, but meant to be used specifically with Android phones.
 
 
 
@@ -54,6 +56,7 @@ ASG                 = ASG = from German 'Anzeigesteuergerät' = which means 'disp
 
 --- I ---
 * Infotainment      = the device at car's dashboard with LCD screen. Used for displaying information in a car (radio station, main menu, navigation).
+* IC                = Instrument cluster (standard car's device that displays speed).
 
 
 
@@ -64,6 +67,7 @@ ASG                 = ASG = from German 'Anzeigesteuergerät' = which means 'disp
 * KL50              = is ignition position #3 (start)
 * KLR               = means ignition switch position #1 (Accessory) In this mode the radio/IVI, windows, etc will be powered on, but the traction motor will not be enabled (ICE or EV), there may be limited HVAC (Heating Ventilation and Air Conditioning) due to the HVAC compressor, and the heater not being powered.
 * Kombi             = a cluster (standard car's device that display speed). This abbreviation is from German word: 'Kombiinstrument'.
+* KPM               = Konzern Problem Management - management of the persisting issue (i.e. software bug).
 
 
 
