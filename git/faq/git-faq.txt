@@ -198,3 +198,74 @@ git clean -xdf
 git log
 # Inspecting sophisticated log with branch diagram (adog = --All --Decorate --Oneline --Graph)
 git log --all --decorate --oneline --graph
+
+
+
+########################### working-with-gerrit #######################################
+Gerrit handles git repositories. It allows for making reviews and managing the repository.
+
+
+### The workflow in gerrit is as follows: ###
+- you make a local branch for your feature development out of the most current master branch
+- any changes you do must end up in ONLY ONE COMMIT (use 'git commit --amend')
+- you make a push by using following command:
+* 'git push origin HEAD:refs/for/master'
+- upon push a new review will be generated for your changes on gerrit
+- when master branch gets updates, you have to do a rebase using commands:
+ * 'git checkout master'
+ * 'git pull'
+ * 'git checkout <your-local-feature-branch>'
+ * 'git rebase master'
+or
+ * git fetch
+ * git rebase origin/master
+- after rebase once again push: 'git push origin HEAD:refs/for/master' and your review will get updated
+- when you have to update your commit, use 'git commit --amend' and then push ('git push origin HEAD:refs/for/master')
+By using amends you will not see diffs between your own changes locally, however gerrit will differentiate them and you will be able to see them on gerrit.
+The differences between your one commit are called 'patchsets' in gerrit.
+- you have to click 'Start Review' to trigger the jenkins build so the jenkins will give you +1 if everything is fine
+In the 'Start Review' window:
+- select reviewers by adding the appropriate emails of people that shall do review (or an email group consisting of few people)
+- give yourself +1, which means you certify your code as complete & ready
+
+
+### When someone asks you to rebase to his commit/review, do the following: ###
+- go onto someone's ongoing gerrit review page through your web browser and find out the command for fetching his changes
+(on the top right click '...' -> 'Download patch' and from available commands take fetch command)
+- fetch someone's work
+i.e.: 'git fetch ssh://alf@gerrit.info:29418/Project1 refs/changes/03/36503/5'
+(last digit is a number of patchset of the commit. In this case it's 5, which means someone pushed 5th times on his review)
+git should display something like the following if succeeded:
+'From ssh://gerrit.info:29418/Project1
+ * branch                refs/changes/03/36503/5 -> FETCH_HEAD'
+It means that git now stores such branch under the temporary 'FETCH_HEAD' name. You can from now on reference to this branch by FETCH_HEAD name.
+- perform rebase by following command:
+'git rebase FETCH_HEAD'
+If there are no conflicts, the rebase will be performed. Push your changes by doing 'git push origin HEAD:refs/for/master'.
+If there are conflicts:
+* resolve them
+* use 'git add' to mark resolved files as resolved
+* use 'git rebase --continue' to finish rebase
+* push your changes by doing 'git push origin HEAD:refs/for/master'.
+IMPORTANT:
+- Gerrit will not allow you to push if your rebase is not up-to-date. Typical causes for this are:
+* the commit you rebased to got updated in the meantime and your are not rebased to the newest one
+* the commit you rebased to also relies on other commits still under development and those other commits got updated
+
+
+### Creating & adding SSH keys for gerrit ###
+SSH keys should be generated on your PC and put into gerrit (go to your profile settings, find SSH keys setting, add SSH key)
+Use this command in git bash: ssh-keygen -t ecdsa -b 521
+Then add your public key located at C:\Users\<username>\.ssh\id_ecdsa.pub to Gerrit user settings. (copy it as a text)
+
+
+### Intersting things about gerrit ###
+- when your review is up-to-date, the blue icon 'Active' will be displayed at the left upper corner (next to the title of your review)
+- when your review is not up-to-date (i.e. master branch got updated), the red icon 'Merge Conflist' will be displayed at the left upper corner (next to the title of your review)
+- the '+1' grades from people will be erased with each new patchset (commit amend update). You have to give yourself '+1' once again by using 'Reply' button.
+Grades from other people should be restored by themselves (you have to ask them for it).
+
+
+#################################### end of working-with-gerrit #############################################################
+
+
