@@ -117,14 +117,15 @@ Each validation part tests its verification part, i.e. SWE5 performs tests of SW
 
 
 --- EA hotkeys ---
-Ctrl + U            ---> Find usages of a selected object in project tree in all diagrams.
-Alt + G             ---> find object origins in project tree (first click on this object on the diagram, then hit the hotkey)
-Alt + Shift + G     ---> find diagram in proejct tree (first click on the background of the currently opened diagram, then hit the hotkey)
-Ctrl + Delete       ---> Delete the selected element in a diagram from the model.
-F11                 ---> Generate code for the selected single element.
-Shift+F11           ---> Generate code for all the elements of the selected package.
-F12                 ---> View source code for the selected class.
-Ctrl+Alt+B          ---> Open Baseline manager for the selected package.
+Ctrl + U                        ---> Find usages of a selected object in project tree in all diagrams.
+Alt + G                         ---> find object origins in project tree (first click on this object on the diagram, then hit the hotkey)
+Alt + Shift + G                 ---> find diagram in project tree (first click on the background of the currently opened diagram, then hit the hotkey)
+Ctrl + Left Mouse Button Click  ---> Opens additional properties dialog for the clicked object
+Ctrl + Delete                   ---> Delete the selected element in a diagram from the model.
+F11                             ---> Generate code for the selected single element.
+Shift+F11                       ---> Generate code for all the elements of the selected package.
+F12                             ---> View source code for the selected class.
+Ctrl+Alt+B                      ---> Open Baseline manager for the selected package.
 
 
 
