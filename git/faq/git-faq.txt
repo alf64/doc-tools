@@ -239,7 +239,7 @@ git should display something like the following if succeeded:
 'From ssh://gerrit.info:29418/Project1
  * branch                refs/changes/03/36503/5 -> FETCH_HEAD'
 It means that git now stores such branch under the temporary 'FETCH_HEAD' name. You can from now on reference to this branch by FETCH_HEAD name.
-- perform rebase by following command:
+- assuming you are on a branch/commit that needs to be rebased. Now perform rebase by following command:
 'git rebase FETCH_HEAD'
 If there are no conflicts, the rebase will be performed. Push your changes by doing 'git push origin HEAD:refs/for/master'.
 If there are conflicts:
