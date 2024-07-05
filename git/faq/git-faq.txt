@@ -253,6 +253,34 @@ IMPORTANT:
 * the commit you rebased to also relies on other commits still under development and those other commits got updated
 
 
+### Commit chains in gerrit ###
+Commit chain is the following situation: there are multiple reviews opened on gerrit and each one depends on a previous one.
+Example:
+You have a Review#1 with your commit#1 on top of a 'master' branch.
+Then you create Review#2 with commit#2 on top of commit#1.
+This results in a so-called commit-chain, consisting of 2 commits, each one in separate review. But gerrit will display these reviews as associated ones.
+
+
+### Rebasing your commit chain ###
+Normally you rebase your commit chain as follows:
+* go to the very first review/commit in a chain
+* rebase it to 'master' branch (assuming it is derived from this branch) and push your changes to remote
+* go to the 2nd review/commit
+* rebase it to its parent commit (fetch parent commit to FETCH_HEAD and being on commit#2 perform rebase to FETCH_HEAD)
+
+
+### Rebasing your commit chain when one of the commit has changed its commit-msg ###
+Sometimes a reviewer will point out troubles with your commit message and you would need to change it.
+Now this creates a problem - when you change a commit message of commit#1 in a chain, then rebasing commit#2 to its parent will cause the existence of 2 commits#1 under commit#2.
+One commit#1 will be with old commit-msg, 2nd commit#1 will be with new commit-msg. Such situation is not allowable.
+You should do the following:
+* rebase the very first commit to the 'master' branch (assuming it is derived from this branch) and push it to the remote
+* on gerrit go to your review for second commit in a chain and find out the 'Rebase' button. Hit it and select to 'rebase to a parent change'. Gerrit will automatically perform a rebase correctly.
+Why the rebase performed by gerrit is fine, while doing it for yourself is not? (double commit#1 with different commit-msg)
+Gerrit probably does perform this rebase by not using 'git rebase' command, but by intelligently using 'git cherry pick' command (cherry picking commit#2 onto commit#1 with new commit-msg).
+You could try to do that by yourself.
+
+
 ### Creating & adding SSH keys for gerrit ###
 SSH keys should be generated on your PC and put into gerrit (go to your profile settings, find SSH keys setting, add SSH key)
 Use this command in git bash: ssh-keygen -t ecdsa -b 521
