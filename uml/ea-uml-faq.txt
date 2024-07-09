@@ -117,17 +117,17 @@ Each validation part tests its verification part, i.e. SWE5 performs tests of SW
 
 
 --- EA hotkeys ---
-Ctrl + Left Mouse Button Click              ---> CLick this way on objects to 
-Ctrl + U                                    ---> Find usages of a selected object in project tree in all diagrams.
-Alt + G                                     ---> find object origins in project tree (first click on this object on the diagram, then hit the hotkey)
-Alt + Shift + G                             ---> find diagram in project tree (first click on the background of the currently opened diagram, then hit the hotkey)
-Ctrl + Right Mouse Button Click             ---> Opens additional properties dialog for the clicked object. I.e. StateNode Object allows for chaing its graphics between 'initial' and 'final'
-Shift + <when drawing controlflow line>     ---> Hitting Shift button can make the line 'break', which allows you to make 90 degrees turns
-Ctrl + Delete                               ---> Delete the selected element in a diagram from the model.
-F11                                         ---> Generate code for the selected single element.
-Shift+F11                                   ---> Generate code for all the elements of the selected package.
-F12                                         ---> View source code for the selected class.
-Ctrl+Alt+B                                  ---> Open Baseline manager for the selected package.
+Ctrl + Left Mouse Button Click                                      ---> Click this way on objects to select multiple of them
+Ctrl + U                                                            ---> Find usages of a selected object in project tree in all diagrams.
+Alt + G                                                             ---> Find object origins in project tree (first click on this object on the diagram, then hit the hotkey)
+Alt + Shift + G                                                     ---> Find diagram in project tree (first click on the background of the currently opened diagram, then hit the hotkey)
+Ctrl + Right Mouse Button Click                                     ---> Opens additional properties dialog for the clicked object. I.e. StateNode Object allows for chaing its graphics between 'initial' and 'final'
+Shift + Left Mouse Button Click <when drawing controlflow line>     ---> Hitting Shift button can make the line 'break', which allows you to make 90 degrees turns
+Ctrl + Delete                                                       ---> Delete the selected element in a diagram from the model.
+F11                                                                 ---> Generate code for the selected single element.
+Shift+F11                                                           ---> Generate code for all the elements of the selected package.
+F12                                                                 ---> View source code for the selected class.
+Ctrl+Alt+B                                                          ---> Open Baseline manager for the selected package.
 
 
 
@@ -157,13 +157,28 @@ Stereoptype     ---> means any non-standard type in EA, i.e.: Enum
 
 
 --- EA - diagrams layout ---
-There is a way to align all of the objects on the diagrams i.e.:
+There is a way to easily align all of the objects on the diagrams, i.e.:
 - for them to be of the same size
 - for them to be horizontally & vertically aligned
 - for them to be evenly spaced horizontally or vertically
 The tools for such kind of alignment are available in EA under its main bar: Layout -> Alignment
+Select objects on diagram that you would like to align (hold Ctrl key and left-click on them) and then select the align/layout operation you would like to perform.
+Hint: objects are being aligned to the object that was clicked last (it is highlighted a little different than others).
 
 
 
+--- EA copying objects (diagrams) between EA instances ---
+On your PC you can have multiple instances of EA opened and you can copy diagrams/objects between them (i.e. from one project to another).
+When copying diagrams, you would need to copy also its resources (objects that it uses - EA keeps such objects in the project tree alongside the diagram).
+Let's say you would like to copy the activity diagram named Diagram1. Do the following:
+ - navigate to the first instance of your EA with the project where the Diagram1 exists
+ - in the project tree find out the diagram you want to copy (Diagram1)
+ - in the project tree find out where the diagram's objects are placed
+ - now in the project tree highlight the nearest top folder that contains your Diagram1 and its objects
+ - right-click on such folder and select: Copy / Paste -> Copy to Clipboard -> Full Structure for Duplication
+ - navigate to the second instance of your EA with the project where the Diagram1 shall be copied to
+ - right-click on a folder where you would like to paste the copied content
+ - right-click on such folder and select: Copy / Paste -> Paste Package from Clipboard (or Paste Element(s) from Clipboard)
+The folder that you have copied probably contains another diagrams and objects that you don't need in the destination. You would need to delete those manually.
 
 
