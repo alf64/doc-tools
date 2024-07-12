@@ -29,10 +29,30 @@ The directory wth name <name-of-venv> will be created and initial virtual enviro
 2. Activate virtual environment
 cd <name-of-venv>\Scripts
 activate.bat
+Now in the console the name of the virtual env will be displayed near the prompt.
 
 3. Deactivate virtual environment
 cd <name-of-venv>\Scripts
 deactivate.bat
+
+4. Info about usage of virtual env
+When you have the virtual env activated, please call python from within it.
+I.e.: 
+<your-virtual-env-name>\Scripts\python.exe <name-of-the-py-script-to-call>
+This should assure that you use the python and packages from within virtual env.
+It would be good to use pip also from this location when installing or uninstalling packages.
+Installed packages shall fall into:
+<your-virtual-env-name>\Lib\site-packages
+TIP: <your-virtual-env-name>\pyvenv.cfg holds info from what python version the virtual env has been created
+
+4. Moving virtual env between different computers
+Upon moving the virtual env to a new computer or new location, you have to edit some paths within it.
+Otherwise it will try to use its previous location and you may encounter error like 'ModuleNotFound' and so on.
+The following has to be done after moving to a new location:
+- delete <your-virtual-env-name>\Lib\site-packages\__pycache__ directory
+- edit the <your-virtual-env-name>\Scripts\activate - update paths that will match the new location of your virtual env
+- edit the <your-virtual-env-name>\Scripts\activate.bat - update paths that will match the new location of your virtual env
+- edit the <your-virtual-env-name>\Scripts\jp.py - update paths that will match the new location of your virtual env
 
 ---------------------------------------------------------------------------------------------------------
 
