@@ -202,7 +202,7 @@ git log --all --decorate --oneline --graph
 
 
 ########################### working-with-gerrit #######################################
-Gerrit handles git repositories. It allows for making reviews and managing the repository.
+Gerrit handles git repositories. It allows for making reviews and managing the repository. It's an alternative to github and gitlab.
 
 
 ### The workflow in gerrit is as follows: ###
@@ -279,6 +279,19 @@ You should do the following:
 Why the rebase performed by gerrit is fine, while doing it for yourself is not? (double commit#1 with different commit-msg)
 Gerrit probably does perform this rebase by not using 'git rebase' command, but by intelligently using 'git cherry pick' command (cherry picking commit#2 onto commit#1 with new commit-msg).
 You could try to do that by yourself.
+
+
+### What to do when the base commit of the commit chain has been merged into the master while the other commits from the chain were not? ###
+Well now the rest of your chain should be rebased to the master branch.
+- git pull the newest master branch
+- git cherry-pick the next commit from the chain
+- push your changes.
+Gerrit should become aware that you made a rebase now onto the master. He will update your review page.
+
+
+### How does gerrit associate commit with review page? ###
+As long as the 'Change-Id' field (that is added by gerrit to your commit-msg when you push your changes for the 1st time when creating review) remains the same, gerrit should
+associate whatever you do with your commit with the opened review.
 
 
 ### Creating & adding SSH keys for gerrit ###
