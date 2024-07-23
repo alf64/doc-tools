@@ -117,12 +117,13 @@ Each validation part tests its verification part, i.e. SWE5 performs tests of SW
 
 
 --- EA hotkeys ---
-Ctrl + Left Mouse Button Click                                      ---> Click this way on objects to select multiple of them
+Ctrl + F                                                            ---> Opens 'Find in Project' view where you can search for different things within a project.
+Ctrl + Left Mouse Button Click                                      ---> Click this way on objects to select multiple of them.
 Ctrl + U                                                            ---> Find usages of a selected object in project tree in all diagrams.
-Alt + G                                                             ---> Find object origins in project tree (first click on this object on the diagram, then hit the hotkey)
-Alt + Shift + G                                                     ---> Find diagram in project tree (first click on the background of the currently opened diagram, then hit the hotkey)
-Ctrl + Right Mouse Button Click                                     ---> Opens additional properties dialog for the clicked object. I.e. StateNode Object allows for chaing its graphics between 'initial' and 'final'
-Shift + Left Mouse Button Click <when drawing controlflow line>     ---> Hitting Shift button can make the line 'break', which allows you to make 90 degrees turns
+Alt + G                                                             ---> Find object origins in project tree (first click on this object on the diagram, then hit the hotkey).
+Alt + Shift + G                                                     ---> Find diagram in project tree (first click on the background of the currently opened diagram, then hit the hotkey).
+Ctrl + Right Mouse Button Click                                     ---> Opens additional properties dialog for the clicked object. I.e. StateNode Object allows for chaing its graphics between 'initial' and 'final'.
+Shift + Left Mouse Button Click <when drawing controlflow line>     ---> Hitting Shift button can make the line 'break', which allows you to make 90 degrees turns.
 Ctrl + Delete                                                       ---> Delete the selected element in a diagram from the model.
 F11                                                                 ---> Generate code for the selected single element.
 Shift+F11                                                           ---> Generate code for all the elements of the selected package.
@@ -180,5 +181,15 @@ Let's say you would like to copy the activity diagram named Diagram1. Do the fol
  - right-click on a folder where you would like to paste the copied content
  - right-click on such folder and select: Copy / Paste -> Paste Package from Clipboard (or Paste Element(s) from Clipboard)
 The folder that you have copied probably contains another diagrams and objects that you don't need in the destination. You would need to delete those manually.
+
+
+
+--- EA 'Find in Project' ---
+Upon pressing 'Ctrl + F' in EA, the 'Find in Project' tab will be opened. It allows you to search for things in the project (in all the diagrams, all the objects).
+Using 2 dropdown lists you can customize your search. In the 3rd edit box you enter the 'term' (text) to search for.
+The deault search is:
+* 'Common Searches' : 'Simple'. In the edit box put the text you want to search for and just search for its instances.
+Another useful searches:
+* 'Diagram Searches' : 'Find Orphans'. Put nothing in the edit box, just search. This will find all the objects that are not used in any diagram.
 
 
