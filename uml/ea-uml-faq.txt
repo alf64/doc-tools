@@ -184,6 +184,16 @@ The folder that you have copied probably contains another diagrams and objects t
 
 
 
+--- EA copying (duplicating) objects within diagram ---
+If you would like to duplicate some of the objects on your diagram, please do the following:
+1. Hold Ctrl and using Left-Mouse-Button click highlight objects
+2. Keep holding Ctrl and hold the Left-Mouse-Button on one of the selected objects
+3. Move the cursor somewhere where you would like duplicated objects to be created.
+4. Let go of the buttons you hold. The pop-up window will be opened telling you which objects are going to be duplicated.
+There will be also an option to duplicate the connectors. Click OK and its done.
+
+
+
 --- EA 'Find in Project' ---
 Upon pressing 'Ctrl + F' in EA, the 'Find in Project' tab will be opened. It allows you to search for things in the project (in all the diagrams, all the objects).
 Using 2 dropdown lists you can customize your search. In the 3rd edit box you enter the 'term' (text) to search for.
