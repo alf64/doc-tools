@@ -203,3 +203,15 @@ Another useful searches:
 * 'Diagram Searches' : 'Find Orphans'. Put nothing in the edit box, just search. This will find all the objects that are not used in any diagram.
 
 
+
+--- EA refering to other diagram ---
+There is a way to refer to other diagram in current diagram. Refered diagram is called 'composite'.
+How to do that:
+- in current diagram add Activity block and name it how you want
+- right click on it and select 'New Child Diagram...' -> Select Composite Diagram
+- new window will open that will allow you to select the diagram that this block should point to. Select such diagram
+- upon pointing to diagram you will see new icon on this Activity block in its right corner - it indicates that this blocks refer to other diagram
+- if you double click on this Activity block you will be pointed to the diagram it points to
+- if you ever would like to remove such reference, right click on this Activity block and select 'New Child Diagram...' -> 'Composite' (highlighted option by a mark). This will unset the composite diagram.
+
+
