@@ -261,6 +261,43 @@ Then you create Review#2 with commit#2 on top of commit#1.
 This results in a so-called commit-chain, consisting of 2 commits, each one in separate review. But gerrit will display these reviews as associated ones.
 
 
+### Failed to push - '(commit already exists (in the change))' error message ###
+When you update your commit and try to push and see the mentioned error it probably means that you work on relation chain and your commit depends on other commits.
+Now it's very important that everytime you try to update your commit, the commits in relation chain must the most up-to-date ones.
+You can see if your relation chain is up to date on gerrit. See your relation chain and if some commit in chain is not up-to-date then you will see '(Not Current)' being displayed in red near it.
+To fix it you to have rebase the first commit without a note 'Not Current' onto its parent (that got updated).
+Let's see an example of relation chain as displayed in gerrit (on top is your newest commit, below may be someone elses commits):
+"Commit 1 blabla"
+"Commit 2 blabla"
+"Commit 3 blabla" (Not current)
+"Commit 4 blabla" (Not current)
+"Commit 5 blabla" (Not current)
+
+As you see some commits are marked as Not Current.
+In this situation when you add another changes to your Commit 1 and try to push it you will get an error '(commit already exists (in the change))'.
+This is because gerrit knowns that some commits under Commit 1 have changed and you are trying to push older ones from your computer since you still sit on them.
+
+To easily fix this particular situation you have to rebase Commit 2 onto its parent (Commit 3) (because currently Commit 2 relies on old parent. You have to do rebase onto newest Commit 3)
+The rebase can be easily done in gerrit by clicking onto the page for Commit 2 and selecting 'Rebase' -> 'Rebase onto parent'. Or you can rebase manually on your machine.
+
+After rebasing Commit 2 the situation will be as follows:
+"Commit 1 blabla"
+"Commit 2 blabla" (Not current)
+"Commit 3 blabla" (Not current)
+"Commit 4 blabla" (Not current)
+"Commit 5 blabla" (Not current)
+
+Now you have to rebase Commit 1 onto its parent, since Commit 2 got updated.
+If everyghing went smoothly you will get the following situation:
+"Commit 1 blabla"
+"Commit 2 blabla"
+"Commit 3 blabla"
+"Commit 4 blabla"
+"Commit 5 blabla"
+
+Now you can push changes to Commit 1 without errors.
+
+
 ### Rebasing your commit chain ###
 Normally you rebase your commit chain as follows:
 * go to the very first review/commit in a chain
