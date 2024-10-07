@@ -129,6 +129,7 @@ F11                                                                 ---> Generat
 Shift+F11                                                           ---> Generate code for all the elements of the selected package.
 F12                                                                 ---> View source code for the selected class.
 Ctrl+Alt+B                                                          ---> Open Baseline manager for the selected package.
+Shift+[any of the directional arrows key]                           ---> Move selected component in the diagram to the desired direction
 
 
 
@@ -141,6 +142,7 @@ Locks are not released when you close EA, you have to release them by yourself.
 Administrators contain power of releasing someone's locks.
 When someone holds a lock, it is usually red.
 Your locks are usually light blue.
+For requirements linking you do not need any locks.
 
 
 
@@ -184,7 +186,7 @@ The folder that you have copied probably contains another diagrams and objects t
 
 
 
---- EA copying (duplicating) objects within diagram ---
+--- EA copying (duplicating) objects within diagram (works also between diagrams) ---
 If you would like to duplicate some of the objects on your diagram, please do the following:
 1. Hold Ctrl and using Left-Mouse-Button click highlight objects
 2. Keep holding Ctrl and hold the Left-Mouse-Button on one of the selected objects
@@ -213,5 +215,22 @@ How to do that:
 - upon pointing to diagram you will see new icon on this Activity block in its right corner - it indicates that this blocks refer to other diagram
 - if you double click on this Activity block you will be pointed to the diagram it points to
 - if you ever would like to remove such reference, right click on this Activity block and select 'New Child Diagram...' -> 'Composite' (highlighted option by a mark). This will unset the composite diagram.
+
+
+
+--- EA adding existing component to diagram ---
+Existing components are listed in the project tree.
+You can easily add them by simply dragging them by holding the Left Mouse Button and releasing onto your diagram.
+In case of requirements (design ID) components, there will be a question if you want to add them as 'Object' or 'Link'. Select 'Link', as the 'Object' one will create new one.
+
+
+--- EA requirements linking ---
+There should be pre-defined traceability matrix in the project that allows you to link requirements to other stuff (like other requirements or 'design IDs').
+
+
+
+--- EA zoom-in and zoom-out ---
+By using scroll on your mouse you can zoom-in or zoom-out the current view of the diagram.
+TIP: zoom is performed in respect to currently selected/highlighted object on the diagram. That's why zoom can move you out of your desired area if selected object is far away from currently observed area.
 
 
