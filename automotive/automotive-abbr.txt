@@ -98,6 +98,7 @@ Android Auto        = app built-in into the Infotainment. Pretty much similiar t
 
 --- T ---
 * TEP               = TEchnical Process
+* TSR               = Traffic Sign Recognition
 
 
 

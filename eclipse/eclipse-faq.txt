@@ -11,3 +11,18 @@ Window -> Preferences -> C/C++ -> Editor -> Save Actions -> Ensure newline at th
 UTF-8
 If ANSI is needed, select UTF-8 as ANSI is a subset of UTF-8.
 
+
+##### Changing language of Eclipse
+By default eclipse may enable with language other than you prefer. There is no way to change it in eclipse menu.
+You can change it through eclipse.ini file that's located in eclipse installation dir.
+
+In my case the application was running in Polish and i wanted it to be in English
+I fixed this problem by adding the following to eclipse.ini:
+-nl
+en
+
+This must be added BEFORE '-vmargs' line and it's crucial to keep the newline (the can't be in the same line)
+
+Eclipse must be restarted for the changes to take effect.
+
+Another way of changing language could be: add the -Duser.language=en jvm argument AFTER the -vmargs parameter in the eclipse.ini file.
