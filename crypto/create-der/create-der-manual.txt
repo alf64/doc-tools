@@ -1,0 +1,25 @@
+########################################################################################################
+#  How to create a public key file (ASN.1: DER encoded) knowing modulus and exponent of a public key   #
+########################################################################################################
+
+Assuming you have the public key in a form of:
+- modulus (i.e. 256 Bytes)
+- exponent (i.e. 4 Bytes)
+
+And you would like to create an official file with pubkey
+
+Do the following:
+1) Take the template_def.asn1 (it's a txt file) and edit it with your modulus (n) and exponent (e). Change the name to def.asn1 if you want
+ - change the n=INTEGER:0x%%MODULUS%% into i.e. n=INTEGER:0xBAAE0E52422893DA234686B65E5247076F232D5E60135A133B6B9AB69C6E02000C4466C98078EE98751BDC59753BFEBBBC34D818FD5CD55ACE235C8053A9CBEF8F39033E6C657B5688D16DD867F55C4C2F76FF231EB7C87A0122C2F508B7D57743F15693E5CCF5833214BD9E84C667E7B458E85F472E4DDEBAC61271D116FC219FDD196B3CABE26B7C0FB4A480A4E807C0A9FA7083A93D58903F4B8DD8FA36F55AD540EC8182AE681D501B2E0F9D202BF85BD1243CCFF1CEE4A299A6C4E781BAE073B9CE19353211D6ADAE96944C7A4335320B3074EB4D5D661F8FF8109D30AEEB1ACC5120A2A3CB9B9801D248ED8CECB2A112EE591B8035FFC98AF5D1243E93
+ - change the e=INTEGER:0x%%EXPONENT%% into i.e. e=INTEGER:0x010001
+ - please note that bytes are from MSB to LSB. And for the exponent which typically is 0x00010001 (65537) you don't insert the first 00
+ - in the C embedded code, such bytes were also uint8_t arrays, plain bytes organized from MSB to LSB
+ - please note that the modulus needs to make sense, it can't be just randomized data generated from hex editor. Must be a real modulus of a public key that was generated (i.e. using openssl tool).
+ 
+2) Use the following openssl command. This will give you a DER encoded (binary form) RSA key
+openssl asn1parse -genconf def.asn1 -out pubkey.der -noout
+Please note, that when inspecting this key in an application like KeyStore Explorer, you will notice that additional byte 0x00 has been added at the beginning of modulus. This is normal for DER encoding, as it operates on unsigned values, therefore makes sure the modulus is unsigned by inserting 0x00 as first byte.
+
+3) Then convert it into a PEM key (txt form)
+openssl rsa -in pubkey.der -inform der -pubin -out pubkey.pem
+

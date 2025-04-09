@@ -1,0 +1,233 @@
+#####################################
+######### Crypto manual #############
+########### by alf64 ################
+#####################################
+
+Cryptography means encrypting (encoding) and decrypting (decoding) the data.
+
+Can be:
+ - symetric
+ - asymetric
+
+Symetric:
+- uses one, the same key for encryption and decryption
+- such key is on both side (sender and recipient side)
+- such key should be kept private, provided only to required parties
+- symetric example standard is: AES
+
+Asymetric:
+- uses two keys
+- public key:
+ * used for data encryption at the sender side
+ * can be easily distributed officially to all parties that wants to send data to recipient (that's why it's called 'public')
+- private key:
+ * used for data decryption at the receiver side
+ * should be kept secret, available only at the recipient side (that's why it's called 'private')
+- above usage is true for data exchange, but for digital signing it's the opposite (public key used for decryption, private key for encryption - signing)
+- asymetric example standard is: RSA
+
+
+Technologies for securing the connection between client and server:
+SSL = Secure Sockets Layer          (older)
+TLS = Transport Layer Security      (newer)
+
+
+Other abbreviations:
+PKI = Public Key Infrastructure - a set of technologies meant for securing the environment. I.e. the certficate chain can describe the PKI
+AES = Advanced Encryption Standard (cryptosystem)
+RSA = Rivest-Shamir-Adleman (cryptosystem)
+CA = Certificate Authority - a trusted company that issues certificates that can be trusted
+
+PEM = Privacy Enhanced Mail - a text file that include data in a Base64 format.
+Such file can hold one or all of the following:
+- a chain of certfificates (cert info + public key associated with each one) (each cert starts with -----BEGIN CERTIFICATE-----)
+- a certfificate (cert info + public key) (starts with -----BEGIN CERTIFICATE-----)
+- a public key (starts with -----BEGIN PUBLIC KEY-----)
+- a private key (starts with -----BEGIN PRIVATE KEY-----)
+Each line in such txt file is of maximum 64 characters.
+File needs to have newline before end of file.
+
+ASN.1 - a standard of describing the data, used especially in cryptography. It standarizes data types that could be presented in a binary form.
+
+X.509 - another standard of presenting data, commonly used for certfificates in cryptography.
+
+DER = Distinguished Encoding Rules = a method of encoding data (ASN.1 or X.509) in a binary form.
+If you operate on certficates or keys in a binary files form, they are most probably encoded in DER.
+
+
+
+RSA highlights:
+- In RSA, you cannot encrypt messages that are longer than your private key. I.e.: with a key of 2048-bits (256 Bytes) long, you can only encrypt hashes (or messages) of maximum 256 Bytes long
+- RSA is no good for encrypting the long messages due to the above, so typical approach is to use symetric crypto (like AES) to encrypt whole messages, and use RSA to securely share the symetric key
+- in case of securing data exchange (communication), the public key is used for encryption, private key for decryption
+- but in case of digital signing, the public key is used for decryption, private key for encryption (actually it's called signing - it's a little different than encryption, because encrypting with private key is insecure so the algo for signing is a little different)
+
+
+Hash (also called 'digest'):
+String of bytes calculated from some data (i.e. from file).
+SHA-256: algorithm of calculating a hash of 256-bits (32 Bytes) long. Most common standard.
+
+
+Signature:
+Encrypted (signed) hash, using private key. So in fact this is also a string of bytes. The size of it may depend on the size of a key used for encryption.
+If a key used for encryption was 2048-bit (256 Bytes) long, then the signature could be 256 Bytes long.
+So for example of using 2048-bits key and SHA-256: the input is the hash (32 Bytes), the output is the signature (256 Bytes).
+Above is true for 'RSA-PSS signing' algorithm, however for plain 'RSA PKCS1-v1_5' the signature can be 32 Bytes long (same as hash size).
+
+
+Digital Signing:
+Means providing a way for proving that the data you send is really the data from you.
+Assuming that some file is going to be send and we want to prove that it can be trusted, the flow in general is as follows:
+- creating a key pair (public and private)
+- sharing the public key with the client (through some secure method, so the recipient knows that it is from you)
+- generating a hash value from the data (i.e. from file), using a hash algorithm (i.e. SHA-256)
+- generating a signature from this hash, using your private key
+- delivering the file and the signature to the client
+- the client should use the public key (that you have previously delivered through some other means / channel) to verify the signature
+- in most simple case, the verification is done by:
+ * decrypting the signature using public key, so the output is the hash that was calculated by the sender
+ * calculating the hash from the file yourself
+ * comparing the hashes - if they match - then the verification is ok
+ * if there is a mismatch - verification fails
+It all works due to assumption, that there is only person with the private key that can encrypt the message / hash (create signatures).
+Therefore anyone with the public key can decrypt the message and check its contents, and anyone knows that it was generated by the only one authority that has private key.
+It is important that the public key on client side is trusted and properly stored so no one could replace it for another one without the client knowledge.
+(Most simple attack is to replace the public key at the client side to a tampered one, so the hacker could use its own private key and client will decrypt hacker's messages successfully)
+
+
+Signature verfification:
+- means checking out if the signature is valid
+- most simple verification is done by decrypting the signature (getting the original hash value calculated by the sender), calculating your own hash and comparing them
+- above is true for RSASSA-PKCS1-v1_5 signing algorithm
+- for more secure algorithms like RSA-PSS, it is not possible to decrypt the signature, as signatures are randomized (each time different, even though the input hash was the same)
+Verification in such case is done indirectly - you use a tool (i.e. opennssl) to which you provide a calculated hash and a public key, and the tool does the checking, telling you if signature is verified or not
+
+
+RSA Signing Algorithms types (signature schemes):
+- RSASSA-PKCS1-v1_5: older one, deterministic - everytime you put the same hash as an input, you always get THE SAME signature 
+- RSA-PSS:           newer one, randomized    - each time you put the same hash as an input, you get DIFFERENT signature
+
+
+To actually verify an RSA-PSS signature, you have to know the following:
+ - that the signature is indeed of type RSA-PSS;
+ - the hash function used to first process the hashed data (default is SHA1, but mostly SHA-256 is used)
+ - the MaskGenFunction (MGF) used in PSS (normally MGF1, since this is the only defined MGF function, so in the end you do not need to know that)
+ - the salt length (typically 0x20 = 32); But when verifying a signature, you do not need to know that. You can skip 'salt' verification at the recipient side by putting '-1' as salt during verification
+ - the trailer byte (normally 0xBC; that's the only one people ever use and there is little reason to change it, so again not needed to care about it).
+HashAlgorithm:         DEFAULT sha1,
+MaskGenAlgorithm:      DEFAULT mgf1SHA1,
+saltLength:            DEFAULT 0x20 = 32,
+TrailerField:          DEFAULT 0xBC
+
+
+What the public key consists of (fields):
+ - (n) - modulus (i.e. 2048-bits = 256 Bytes, you decide of its size during key generation), its value is created during generation. The bigger size the more security, but also encryptions/decryptions operation takes much longer. Typical values are: 2048-bits or 4096-bits.
+In DER encoding you may notice that additional byte 0x00 is always at the beginning of modulus, making it look like i.e. 257 Bytes not expected 256. This is normal for DER encoding, as it operates on unsigned values, therefore makes sure the modulus is unsigned by inserting 0x00 as first byte.
+In case of embedding the modulus into the code, make sure it's without this 0x00
+ - (e) - exponent (4 Bytes), typically its value is 0x00010001 = 65537
+Please note that bytes are typically presented as Big Endian from MSB to LSB. And for the exponent which typically is 0x00010001 (65537) you don't insert the first 0x00
+
+
+What the private key consists of (fields):
+ - (n) - modulus (i.e. 2048-bits = 256 Bytes, you decide of its size during key generation), its value is created during generation. The bigger size the more security, but also encryptions/decryptions operation takes much longer. Typical values are: 2048-bits or 4096-bits.
+ - (e) - exponent (4 Bytes), typically its value is 0x00010001 = 65537
+ - (p) - big prime number from which modulus has been calculated (n = p * q). Size of p and q should be the same. p must be different than q, otherwise p and q could be determined quickly by p = q = sqrt(N)
+ - (q) - big prime number from which modulus has been calculated (n = p * q). Size of p and q should be the same. p must be different than q, otherwise p and q could be determined quickly by p = q = sqrt(N)
+ - exp p - prime exponent p
+ - exp q - prime exponent q
+ - crt coefficient
+ - (d) - private / decryption exponent - the most important value of the key that must be kept secret at all costs
+
+
+OpenSSL - a command line tool, that can be used on Linux systems and is also available through Git Bash cmd line.
+It can be used for:
+- generating RSA key pairs
+- encrypting messages (or hashes)
+- decrypting
+- verifying signatures
+- and more...
+
+
+------------------------------------------------------------------------------------------------
+OpenSSL useful commands presenting a flow of creating and veryfying a signature
+(can be called from Git Bash - a command line tool delivered with Git installation)
+------------------------------------------------------------------------------------------------
+Private key generation into a file 'privatekey2048.pem':
+openssl genpkey -out privatekey2048.pem -algorithm RSA -pkeyopt rsa_keygen_bits:2048
+
+Please note that the .pem is a text file, presenting your key in Base64 encoding. This is a format typically used.
+You can convert it into plain binary form if you want:
+openssl base64 -d -in privatekey2048.pem -out privatekey2048.bin
+
+You would probably expect the key in a binary form to be exactly 2048-bits (256 Bytes) long, but actually it is much longer and it's normal.
+It's just the modulus (n) part of the key that is 2048-bits long, but the key consists of more information (p, q, and others).
+(Same apply for public key - it will be a little longer because it also contains other data than modulus)
+
+Public key generation into a file 'publickey2048.pem' (please note that the input is the private key that you have created using previous command):
+openssl rsa -in privatekey2048.pem -outform PEM -pubout -out publickey2048.pem
+
+Created ExampleFile.bin using HxD app, used only bytes from ascii range (therefore the bytes holds some text): thisIsAnExampleFileMeantForEncodingCreatedByAlfSoItCanBeTrustedd
+The file is 64 Bytes long.
+
+Calculate hash from ExampleFile.bin using SHA-256 algorithm and save it into file (ExampleFile.hash.bin). The hash is 256-bits (32 Bytes) long.
+(Please note that the generated hash is in a binary form):
+openssl dgst -sha256 -binary ExampleFile.bin > ExampleFile.hash.bin
+
+Create a signature - sign the hash using RSA-PSS algorithm. The inputs are: ExampleFile.hash.bin, privatekey2048.pem.
+The output is ExampleFile.signature.bin. The 'salt' is a parameter of RSA-PSS that you can choose. Usually it is a length (in bytes) of hash (in this case 32).
+(Interesting thing is, that '-1' value is also accepted as salt. It is most probable that such value ommitts salt inclusion during signature creation)
+openssl pkeyutl -sign -out ExampleFile.signature.bin -pkeyopt digest:sha256 -pkeyopt rsa_padding_mode:pss -pkeyopt rsa_pss_saltlen:32 -in ExampleFile.hash.bin -inkey privatekey2048.pem
+
+Please note, that signature created using RSA-PSS algorithm is different each time you generate it, even though the input hash is the same.
+So if you run the command above once again, you will get different signature next time.
+Please note that the signature is in a binary form and the length is the same as your key length (2048-bits = 256 Bytes)
+
+Convert the signature in a binary form into a text form (Base64 encoding format)
+Such format could be useful for other verifying tools that prefer a text form instead of binary. Also usually a signature in a text form is prefered by recipients.
+openssl base64 -in ExampleFile.signature.bin -out ExampleFile.signature.txt
+
+Please note that the signature in a text form (Base64 encoding format) is of greater size, as Base64 carries out some overhead (its own metadata) with it.
+Please also note that each line is of maximum 64 characters length and ends with newline CR LF
+Please also note that the newline is inserted before end of file.
+These are the requirements for each .pem file like that.
+
+If you would ever need to convert the signature in a text form back into binary form, please use the following command:
+openssl base64 -d -in ExampleFile.signature.txt -out ExampleFile.signature.fromtxt.bin
+
+Please note that resulting ExampleFile.signature.fromtxt.bin contents should be exactly the same as the ExampleFile.signature.bin from which the text form originated.
+
+So at the moment you have everything that could be shared with the recipient:
+ - signature (ExampleFile.signature.bin or ExampleFile.signature.txt)
+ - file (ExampleFile.bin)
+ - knowledge which hash algorithm was used for signature (SHA-256 in this case)
+ - public key (publickey2048.pem) - share it with the recipient through another channel of communication (not the same one as you share the ExampleFile.bin and signature)
+
+As a recipient, to verify a signature using openssl tool, you need:
+ - signature (in a .txt form or .bin form, so ExampleFile.signature.bin or ExampleFile.signature.txt)
+ - a file (ExampleFile.bin) for which the signature has been created
+ - a knowledge what SHA algorithm has been used to calculate hash for signature (in this case it was SHA-256)
+ - public key (publickey2048.pem), that you have received through different communication channel
+ 
+Steps to verify signature are:
+1) calculate SHA-256 from ExampleFile.bin
+openssl dgst -sha256 -binary ExampleFile.bin > ExampleFile.hash.calc.bin
+2) If the received signature was in a txt form, convert it to binary form
+(openssl base64 -d -in ExampleFile.signature.txt -out ExampleFile.signature.bin)
+3) Perform a verification using the command below (pass '-1' as salt if you want to exclude salt from verification - therefore if you don;t know the salt you can still get a successful verification):
+openssl pkeyutl -verify -pkeyopt rsa_padding_mode:pss -pkeyopt rsa_pss_saltlen:32 -pkeyopt digest:sha256 -in ExampleFile.hash.calc.bin -sigfile ExampleFile.signature.bin -pubin -inkey publickey2048.pem
+If the signature is verified, you will get the following response from the command above: 'Signature Verified Successfully'.
+If it fails, you will get: 'Signature Verification Failure'
+
+--------------------------- End of RSA key generation and signing examples------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+

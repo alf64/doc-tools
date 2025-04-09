@@ -1,0 +1,142 @@
+#####################################
+#####   Certificates       ##########
+######### by alf64 ##################
+#####################################
+
+Certificates - they are basically public key + metadata with info who is the issuer, recipient and the expiration time
+They are distributed in different forms - a text form (PEM encoded) and binary form.
+Usually as files with extensions like: .pfx, .pem, .cert, .crt.
+
+.pfx is a container file - can contain multiple different things like:
+- key pair
+- certificates
+- single key
+
+Usually when buying a certificate you get a .pfx file which contains RSA key pair (private key, public key + certificate chain associated with the public key)
+Private part should always stay with you.
+Public part (public key + certificate chain) can be shared with external stakeholders.
+
+Certificates are being issed by someone to someone.
+Certificates have validity period. So if they expire, they are no longer valid. You can't extend a life of a certificate. You have to buy or create an entirely new one to replace the expired one.
+
+Certificates can be in a chain - it means one file can include mutlitple certificates and there is a hierarchy between them.
+The first one - valid for the longest period usually - is a Root Certificate.
+The second one (in the middle) - valid a little shorter than Root Cert. Issued by Root Cert.
+The last one - the head certificate - the actual certificate for the client-side (i.e. www.allegro.pl or you). Issued by Intermediate Cert.
+
+It is common for a chain of certificates to include at least 3 certs:
+- Root certificate
+- Intermediate certificate
+- Head Certificate
+
+Root Cert is always used to issue Intermediate Cert.
+And Intermediate Cert is used to issue head cert for the end-line client.
+This is due to the safety reasons, to protect the Root origin of the certs.
+
+Using KeyStore Explorer application you can examine such certificate files to see the data in them.
+
+Useful command (for GitBash) to get the certificates from any url address that you are trying to connect
+openssl s_client -connect <url-address>:<port-if-available> -prexit -showcerts
+or
+openssl s_client -servername <url-address>:<port-if-available> -connect <url-address>:<port-if-available> -prexit -showcerts
+
+So the command for checking certifications for www.allegro.pl website would be:
+openssl s_client -connect www.allegro.pl:443 -prexit -showcerts
+And the certfificate chain is presented in a form of a text (--- BEGIN CERTIFICATE --- certificate data --- END CERTIFICATE ---) at the output log.
+You can copy each cert in that form and save into a text file with .cer extension
+Or save them all into one .cer, which will result in a certificate chain.
+
+Another way of getting the certificates that the website requires is to use your web browser and built-in functionality to inspect certificates.
+I.e. Use Mozilla Firefox and visit https://www.allegro.pl
+Then in Mozilla Firefox on the left of url address there is a lockpad icon. If you click it, you can access more information about the web page.
+There is a tab 'Security' where you can 'View Certificate'. There should also be an option there to Download cert (single cert - a head one, or a whole chain) into a file.
+
+Such certificate file can be then used to update your Trust Store (a local database with certificates that you trust), if you certificate expired and you no longer can access the web page.
+
+
+
+KeyStore Explorer 
+---------------------------------------------
+KeyStore Explorer is a GUI application that can be used to manage java keystores (.jks files) and also different formats of certificate files (i.e. .pfx, .p7b, .pem, .der).
+
+Please note that it is not mandatory to use KeyStore Explorer, as similiar things could be performed by using:
+
+    keyutil - cmd line utility delivered with Java Development Kit
+    openssl - cmd line utility present in Linux OS and also available on Windows OS via the Git Bash (cmd line environment that comes with Git installation)
+    certutil - cmd line utility present in Windows OS, can be used to inspect certificate details (i.e. certutil -dump alf64gordon_gmail.com.pfx will print you info about the .pfx file)
+
+The prerequisite for KeyStore Explorer is Java Runtime Environment installed on your computer. KeyStore Explorer v5.5.3 with Java version 1.8.0_231 has been tested.
+
+Official page for KeyStore Explorer from which the newest version can be downloaded is: https://keystore-explorer.org/
+---------------------------------------------
+
+
+
+.p7b file is a public part of .pfx file
+---------------------------------------
+A .p7b file contains a public part of your .pfx file (your certificate - called 'head certificate' and a public key).
+You can share the public part of your key pair with someone, using this kind of file.
+
+To export the .p7b file from your .pfx file, you can use the KeyStore Explorer application (but it is one of the options, as you could also use openssl cmd line tool or web browser like Microsoft Edge):
+
+    Open the KeyStore Explorer
+    select 'Examine a Certificate' from the welcome view and point to your .pfx file to open it in this app
+    right click on your key pair and select 'Export Certificate Chain'
+    In the export certificate chain window select 'Head Only' and PKCS#7. Unset the 'PEM' option. Select the path where the .p7b file shall be placed (name it shortly).
+    Hit 'Export' button for the .p7b file to be created
+    
+-------------------------------------------------------
+
+
+
+Self Signed Certificates
+--------------------------------------------------------
+These are any certificates that are created on your own. It can be done via openssl cmd line tool or through KeyStore Explorer.
+They are not publicly trusted, because you are not certificate authority, so no one can be sure if you protect these generated certs or if you make any frauds.
+But you can use them for your own purposes.
+
+
+
+Buying a cert from CA (Certificate Authority)
+----------------------------------------------
+Buying a new certificate from external authority is needed if you want your certificate to be publicly trusted.
+You have to reach uout to external company (CA), tell them the common name for which the cert shall be issued, tell them the validity period.
+Then you will get a .pfx file with key pair and certificate chain associated with the public key.
+
+Another way of buying a certificate is to create a self signed certificate on your own, by generating a keypair on your computer, i.e. via KeyStore Explorer.
+Then you can generate a CSR - Certificate Sign Request - from your key pair. It is a kind of file with a request info asking for officially signing it by external company.
+So you deliver such CSR file to CA, and you get a reply from them, also in a form of file, that can be used to sign your certificate (probably other certificates form CA are added to the certificate chain, above yours)
+Import of CA Reply can also be done in KeyStore Explorer.
+
+
+
+
+Trust Store
+-----------------------------------------------
+A Trust Store is a place where your apps store the certificates (public parts - .cer files) to use them to verify connections with web servers using SSL (i.e. https://)
+I.e. Java stores certificates in the cacerts file in its installation directory. cacerts is a keystore file, a password to it is: changeit
+
+Your web browsers also stores most common certificates in their own installation databases.
+Web browsers uses them to verify the connection with https:// websites.
+
+As you now know - the certificates can expire, so they have to be replaced to new ones to continue using secure connections.
+
+When certs expire, websites use to change them. Or they change them before expiration if they found out any security risks.
+So if your Java Trust Store has invalid certificate for i.e. https://www.allegro.pl, your java apps that make connection with that server will refuse to work (error: 'PKIX building failed, invalid certification verify path')
+If your web browser has expired certificate for https://www.allegro.pl then it will refuse to connect with that site.
+
+Java Trust Store can be modified by your own by modyfing a cacerts file (i.e. in KeyStore Exploter) - by adding a new cert, deleting the expired ones.
+Web browser Trust Store can be modified usually by updating the whole web browser - the most common way. A new version of web browser should have most up-to-date certificates.
+But there may be a way to manually update certificates in your web browser Trust Store.
+
+
+
+
+
+
+
+
+
+
+
+
