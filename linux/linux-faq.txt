@@ -76,3 +76,31 @@ usuniecie pliku oryginalnego psuje dowiazanie bo nie ma sie ono do czego odwolac
 
 poleceniem: ls -ali
 mozna wyswietlic pliki i sprawdzic ich nr i-wezlow
+
+
+########## Finding files of specified name #################
+find -iname 'name-of-file'
+I.e. finding files with .txt extension in the current directory and recursively (in subdirectories):
+find -iname '*.txt'
+
+
+########## Searching for specific text in files #################
+grep -ir --color 'text-to-search-for'
+I.e. searching for text 'debug' in files in the current directory and recursively (in subdirectories):
+grep -ir --color 'debug'
+
+
+########## Deleting files #################
+rm -rf file-to-delete
+I.e. deleting files with .txt extension in the current directory and recursively (in subdirectories):
+rm -rf *.txt
+Please note that -rf means Recursively, folders and Force, which may be dangerous as it simply deletes without any warnings.
+You could try to delete without -rf first. Files once deleted using rm are not restorable.
+
+Deleting files found by 'find' command. First you run 'find' command to list the files that will be deleted:
+find . -iname '*.txt' -type f
+Above command lists files of .txt extension in the current directory and subdirectories.
+If the listed files are okay for you to delete, call:
+find . -iname '*.txt' -type f -delete
+Make sure the '-delete' argument is specified as last in this command. Otherwise the command may remove everything in your current folder.
+
