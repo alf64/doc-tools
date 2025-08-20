@@ -1,5 +1,15 @@
 Useful git commands / hints
 
+# Creating new empty (bare) repository. Assumption is that repo name is going to be 'testrepo'
+1. Go to the location which is going to act as a server / remote / origin.
+This could be some real server location or a local pc location or the network drive location.
+Let's say the location is: X/somelocation/
+2. Create a folder there and name it: testrepo.git
+3. Enter the folder and inside it execute the command: git init --bare
+Alternatively the command that will also create a folder could be: git init --bare testrepo.git
+4. Your repo is now initialized.
+5. On your pc you can now clone it by calling: git clone X/somelocation/testrepo.git
+
 # Checks repo status
 git status
 
