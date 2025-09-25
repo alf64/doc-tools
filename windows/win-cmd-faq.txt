@@ -1,0 +1,10 @@
+##### Using pnputil #####
+Using pnputil to install driver:
+pnputil /add-driver <driver-file.inf> /install /force /reboot
+
+List the drivers installed on the system:
+pnputil /enum-drivers
+
+Deleting driver
+pnputil /delete-driver <driver-file-obtained-fromenum-drivers.inf> /uninstall /force /reboot
+#########################
