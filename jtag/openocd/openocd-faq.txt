@@ -1,0 +1,100 @@
+############################################
+############# jlink-faq ####################
+############################################
+
+
+--------------------- OpenOCD with JLink -------------------------
+OpenOCD is free Open On-Chip-Debugger
+It can work with your J-Link debugger out-of-the box because open source community implemented support for J-Link.
+However there is a requirement: for OpenOCD to recognize J-Link debugger properly, you must not install/use J-Link driver from manufacturer (SEGGER).
+OpenOCD requires you to use WinUSB drivers (default drivers when the J-Link is connected for the 1st time on a machine with no SEGGER J-Link drivers instaled).
+
+So you either need a computer which never had a SEGGER J-Link drivers installed or you need to change the drivers for your J-Link from SEGGER ones to WinUSB.
+How to change drivers from SEGGER J-Link to WinUSB (there are 2 ways of doing that):
+1) On J-Links debuggers manufactured after late 2022 you just need to open JLink Configurator (JLinkConfig.exe installed with Jlink drivers), right click your connected debugger and select 'Configure'
+There will be an active option there allowing to switch between SEGGER and WinUSB drivers. On older debuggers this option is greyed out (unavailable).
+2) For older J-Links you have to use software like Zadig that can change usb drivers for connected devices to WinUSB.
+3) Use Device Manager in Windows and change/update the driver for connected J-Link debugger to WinUSB (see later in this faq)
+
+Attention!
+Switching from standard SEGGER drivers to WinUSB will make all the SEGGER software that comes with J-Link drivers unusable (they will not recognize your J-Link debugger)
+If you ever would like to switch back to work with SEGGER J-Link software you have to install SEGGER usb driver (i.e. by calling the drivers installer in the J-Link software installation dir: "C:\Program Files\SEGGER\JLink_V858\USBDriver\InstDrivers.exe")
+
+Try to call openocd telling it to work with jlink configuration: 'OpenOCD.exe -f interface\jlink.cfg' ...
+(interface\jlink.cfg comes with OpenOCD installation in 'share' dir)
+... and you will get 'Failed to open device: LIBUSB_ERROR_NOT_FOUND' 'No J-Link device found' ...
+... that means your J-Link still works with SEGGER drivers, not WinUSB. (or you have your debugger disconnected)
+
+Here is an example call for programming in the blink.elf app file onto the target microcontroller EFM32 using SWD interface of J-Link:
+openocd -f interface/jlink.cfg -c "transport select swd" -c "adapter speed 500" -f target/efm32.cfg -c "program blink.elf verify reset exit"
+(target\efm32.cfg is also a part of openocd installation)
+The '-f' option simply sources files onto the current command line session (it works like 'source' command in linux)
+
+Another example command for programming in the firmware.bin file under address 0x10000:
+openocd -f interface/ftdi/esp32_devkitj_v1.cfg -f board/esp-wroom-32.cfg -c "program_esp ./firmware.bin 0x10000 verify exit"
+
+It is good to see what's in your target .cfg file, because it highlists some details about your target, i.e. in em32.cfg you will see:
+set _FLASHNAME $_CHIPNAME.flash
+flash bank $_FLASHNAME efm32 0 0 0 0 $_TARGETNAME
+flash bank userdata.flash efm32 0x0FE00000 0 0 0 $_TARGETNAME
+flash bank lockbits.flash efm32 0x0FE04000 0 0 0 $_TARGETNAME
+Above defines 3 flash areas. The first one (starts from address: 0) is the flash main block of efm32 where all the code should be put in.
+efm32gg390f1024 reference manual indeed specifies that address 0x0 is a start of flash
+userdata is a block of flash that starts from 0x0FE00000 and that's true with efm32gg390f1024 reference manual
+lockbits area starts from 0x0FE04000 and that's also true with processor documentation
+
+It is possible that the 'program' command needs to be written by yourself, see Olimex_OpenOCD_Programmer.pdf
+Also please refer to openocd.pdf which is a manual for openocd and grep for your mcu i.e. efm32 to see what's availabe for it.
+Within openocd.pdf you will also find a section called '13 Flash Programming' that maybe useful.
+It says that example command to flash bin is: openocd -f board/stm32f3discovery.cfg -c "program filename.bin exit 0x08000000"
+(the 0x08000000 is a target memory address)
+
+-----------------------------------------------------------------------------------------------------
+
+
+
+----------------- Manual - OpenOCD on new computer with fresh Windows 11 ---------------------------
+Assumption: you've got a computer with Windows OS that never had J-Link debugger connected before.
+
+When J-Link Base debugger is connected for the very 1st time Windows will install default drivers for it.
+These are going to be Segger official drivers, as Windows has them in its own installation (C:\windows\system32\DRIVERS\JLinkx64.sys)
+When J-Link Base compact is connected, the default drivers are WinUSB (C:\windows\system32\DRIVERS\winusb.sys).
+
+J-Link Base has the following USB properties:
+VID: 1366
+PID: 0105
+
+J-Link Base Compact has the following USB properties:
+VID: 1366
+PID: 1020
+
+You can change Segger driver to WinUSB by doing the following:
+1. Plug in your device to the host system.
+2. Open Device Manager and locate the device.
+3. Right-click the device and select Update driver software... from the context menu.
+4. In the wizard, select Browse my computer for driver software.
+5. Select Let me pick from a list of device drivers on my computer.
+6. From the list of device classes, select Universal Serial Bus devices.
+7. The wizard displays WinUsb Device. Select it to load the driver.
+If Universal Serial Bus devices doesn't appear in the list of device classes, then you need to install the driver by using a custom INF
+
+-----------------------------------------------------------------------------------------------------
+
+
+
+----------------- OpenOCD tests commands ---------------------------
+Assumption is that you have OpenOCD and J-Link debugger connected to your target (EFM32 mcu) through SWD interface.
+
+Go into directory where your binaries to flash are.
+cd C:\Users\user1\efm32-fw
+
+Call openocd to flash the .bin file at the beginning of flash memory (address: 0x0)
+C:\installations\OpenOCD\v0.12.0\bin\openocd.exe -f interface\jlink.cfg -c "transport select swd" -c "adapter speed 1000" -f target\efm32.cfg -c "program ./firmware.bin 0x0 verify reset exit"
+
+Call openocd to flash the .elf file
+C:\installations\OpenOCD\v0.12.0\bin\openocd.exe -f interface\jlink.cfg -c "transport select swd" -c "adapter speed 1000" -f target\efm32.cfg -c "program ./firmware.elf verify reset exit"
+
+Call openocd to flash the .hex file
+C:\installations\OpenOCD\v0.12.0\bin\openocd.exe -f interface\jlink.cfg -c "transport select swd" -c "adapter speed 1000" -f target\efm32.cfg -c "program ./firmware.hex verify reset exit"
+
+-------------------------------------------------------------------------------------------------

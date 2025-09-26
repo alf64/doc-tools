@@ -1,0 +1,32 @@
+############################################
+############# jlink-faq ####################
+############################################
+
+
+--------------------- Flashing target using JLink commander (JLink.exe) -------------------------
+
+Jlink commander is part of JLink software installation (default installation dir for v8.58: C:\Program Files\SEGGER\JLink_V858)
+JLink commander is a command line tool that can be used to perform various things with the target through JTAG and SWD interface of connected J-Link debugger.
+
+How to flash the target MCU with binary firmware file
+1. Make sure you have the J-Link debugger connected and properly recognized by your operating system.
+2. Open cmd.exe
+3. In cmd.exe cd to location where JLink.exe is (i.e. C:\Program Files\SEGGER\JLink_V858)
+4. In cmd.exe call JLink.exe
+You will now enter a session of JLink.exe in this cmd.exe
+5. Execute command: connect
+6. You'll be asked for device (target) name, input it and press enter. Example target name: EFM32GG390F1024
+7. You'll be asked about interface to use (Jtag, Swd, Cjtag). Choose the one you prefer. I.e. to choose SWD input 'S' and press ENTER.
+8. You'll be asked about interface clock speed (in khz). Default is 4000 khz. You can input your own or just press ENTER to keep the default.
+9. From now on you can execute variosu commands that JLink commander offers.
+The list of commands can be inspected by executing command: ?
+10. Execute command: Erase
+(the target memory will be erased)
+11. Flash target with binary of your choice (firmware.bin) under specified address (0x0 in this case) by executing command:
+LoadFile C:\Users\user1\firmware.bin 0
+12. Verify if the target memory has been programmed successfully with specified binary file under given address (0x0 in this case) by executing command:
+VerifyBin C:\Users\user1\firmware.bin 0
+13. Finish the session with JLink commander by executing command: Exit
+(After this command you will see that your target MCU is getting out of reset and your application starts)
+
+-------------------------------------------------------------------------------------------------
