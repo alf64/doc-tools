@@ -1,4 +1,11 @@
-##### Using pnputil #####
+#################################################
+############### win-cmd-faq.txt #################
+### Useful Windows OS command prompt commands ###
+#################################################
+
+
+
+##### Using pnputil - utility for managing device drivers #####
 Using pnputil to install driver:
 pnputil /add-driver <driver-file.inf> /install /force /reboot
 
@@ -8,3 +15,24 @@ pnputil /enum-drivers
 Deleting driver
 pnputil /delete-driver <driver-file-obtained-fromenum-drivers.inf> /uninstall /force /reboot
 #########################
+
+
+
+##### Other commands & hints #####
+--- Display file tree of a folder
+tree <name-of-the-folder> /F
+
+--- List current directory insights
+dir
+
+--- Change disk drive to D:\
+D:
+
+--- Change directory (path-to-directory must be on the disk drive you are currently on, i.e. if you want to cd to D:\some-folder you need to change disk to D:\ first)
+cd <path-to-directory>
+
+--- Delete currently written command
+'Ctrl + Backspace'
+
+
+
