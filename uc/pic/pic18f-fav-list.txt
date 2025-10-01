@@ -1,0 +1,14 @@
+PIC18F MCUs that are interesting:
+ - PIC18F47J53                       - the one that is on PIC Clicker board. Has USB. Similiar ones: PIC18F26J53, PIC18F27J53, PIC18F46J53,
+ - DM182030                          - development kit with PIC18F57Q84,
+ - EV01G21A                          - development kit with PIC18F56Q71,
+ - DM182029                          - development kit with PIC18F47Q10,
+ - PIC18F57Q84                       - PIC18F family, 128kB Flash, 8kB RAM, 1kB EEPROM, 44 I/O pins, contains CAN/LIN,
+ - PIC18F56Q71                       - PIC18F family, 64kB Flash, 4kB RAM, 256B EEPROM, 44 I/O pins,
+ - PIC18F47Q43                       - PIC18F family, 128kB Flash, 8kB RAM, 1kB EEPROM, 36 I/O pins,
+ - PIC18F24K50                       - PIC18F family, 16kB Flash, 2kB RAM, 256B EEPROM, 22 I/O pins, has USB. Similiar ones: PIC18F25K50, PIC18F45K50,
+ - PIC18F14K50                       - PIC18F family, 16kB Flash, 768B RAM, 256B EEPROM, 22 I/O pins, has USB,
+ - PIC18F04Q40 or PIC18F05Q40        - lowest pincount ones. I would aim for PIC18F05Q40 (more RAM, more Flash),
+ - PIC18F04Q41 or PIC18F05Q41        - lowest pincount ones. Have opamps,
+ - PIC18F26Q10 and PIC18F27Q10       - seems like a PIC18F25Q10 but with double the RAM and Flash,
+ - PIC18F46Q10 or PIC18F47Q10        - similiar to PIC18F25Q10 (PIC18F family, 64kB / 128kB Flash, 4kB RAM, 1kB EEPROM, 36 I/O pins).
