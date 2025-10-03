@@ -1,0 +1,67 @@
+####################################################
+############### pic18f-asm-faq.txt #################
+##### FAQ for pic18f asm and cpu architecture #######
+####################################################
+
+Below info based on PIC18F57Q84.
+
+Chapter 7.4 'PIC18 Instruction cycle'
+
+Exaplains that there are 2 things/terms:
+ - 'Instruction Cycle'
+ - 'Clock Cycle'
+
+This is always true: Instruction Cycle = 4x Clock Cycle
+Clock Cycle - one cpu clock period.
+
+Each assembler instruction can take 1 or more number of 'Instruction Cycles'.
+This means that every assembler instruction can take at least 4 Clock Cycles to be processed by cpu.
+(This is considered a flaw of PIC core comparing to AVR core where most instructions only need 1 clock cycle to be processed).
+
+In the chapter 7.4 there is a 'Figure 7-3' that explains instruction pipelinig.
+You can see that each instruction is processed in 2 phases:
+1) Fetch        - costs 1 instruction cycle
+2) Execute      - costs 1 instruction cycle
+
+Above could mean that in fact each assembler instruction costs at least 2 instruction cycles (8 clock cycles), however!
+The pipelining is there to optimize things.
+In fact the processing looks like this:
+1) 'Execute nothing' & 'Fetch n instruction'                    - costs 1 instruction cycle. Start of program (very 1st instruction).
+2) 'Execute n instruction' & 'Fetch n+1 instruction'            - costs 1 instruction cycle
+3) 'Execute n+1 instruction' & 'Fetch n+2 instruction'          - costs 1 instruction cycle
+4) 'Execute n+2 instruction' & 'Fetch n+3 instruction'          - costs 1 instruction cycle
+
+So you can see that in 1 instruction cycle there is an execution of previous instruction performed and fetch of new one. 2in1 instruction cycle.
+Only the very 1st instruction of the assembly program will take 2 instruction cycles, because there was no 'previous instruction', there was no actual pipeling there.
+The very 1st one is fetched in 1st instruction cycle and executed in 2nd instruction cycle. The 2nd instruction however is being fetched
+in the same instruction cycle in which the 1st one was executed, therefore we've got a fetch 'for free'.
+Every subseqent instruction will take 1 instruction cycle.
+Let's look at that:
+2) 'Execute n instruction' & 'Fetch n+1 instruction'            - costs 1 instruction cycle.    Execution of n instruction and fetch of n+1 instruction ('for free').
+3) 'Execute n+1 instruction' & 'Fetch n+2 instruction'          - costs 1 instruction cycle.    Actual execution of n+1 instruction.
+So in each instruction cycle we've got an actual 'execution', that's why we tell that each instruction (besides the very first one) takes 1 instruction cycle.
+
+'Word' = size of instruction.
+In PIC18F a 'word' = 16-bit.
+Most instructions are single word. So most instructions takes 16-bit (2-Bytes) of Program Memory.
+Each single word instruction takes 1 instruction cycle to be processed.
+However there are few exceptions to the above rule:
+ - there are some multi-word instructions and they can take longer to be processed (i.e. 2-word instruction will take 2 instruction cycles to be processed)
+ - some instructions, like conditional/branching ones, can sometimes take more than 1 instruction cycle
+i.e. if a condition is true and there is a need to jump over the next instruction, the pic core does not actually jump over it but executes 'nop' instruction instead) (this is another pic core flaw)
+
+Most PIC18F datasheets begin with the 'Operating Speed' info:
+ - DC - 64 MHZ clock input
+ - 62.5 ns minimum instruction cycle
+
+From where the 62.5 ns came from? :
+Assumption: Clock = 64MHz.
+Instruction cycle = 4x clock cycle (this is the pic core specific).
+Instruction cycle = 64MHz / 4 = 16MHz. So the 16MHz is the actual instruction cycle frequency rate.
+T = 1/16MHz = 62,5ns
+This means that one instruction processing (one instruction cycle) takes 62,5ns.
+Comparing to AVR core where instruction cycle = clock cycle, this means that PIC running at 64MHz could be comparable to AVR running at 16MHz.
+
+
+
+
