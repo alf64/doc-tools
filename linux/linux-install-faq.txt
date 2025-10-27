@@ -1,0 +1,29 @@
+####################################################
+############### linux-install-faq.txt ##############
+##### FAQ for installing Linux OS ##################
+####################################################
+
+1. When installing Linux (i.e. Ubuntu 24.04) on a computer that used to work in Legacy Boot Mode (MBR, MS-DOS)
+it is recommended to switch to new standard UEFI mode that supports GPT (GUID Partition Table).
+a) in device BIOS switch from Legacy Mode to UEFI mode
+b) run ('try') Linux from bootable drive, when it boots do the following:
+ - press Ctrl + Alt + T to open the terminal
+ - run app that manages partitions: sudo gparted
+ - gparted is a graphical app, so from now you navigate within its window
+ - select the hard disk you are gonna format/prepare for Linux (i.e. '/dev/sda') - it's in the upper right corner of gparted window
+ - see the existing partitions and delete all of them (rightclick -> delete). It may be required to click 'unmount' first for the 'delete' option to become visible
+ - accept/execute the changes
+ - Device -> Create Partition Table... -> gpt
+ - create 8GB partition of ext4 type. Name it: boot_grub.
+ - accept/execute the changes
+ - right click on boot_grub partition -> Manage Flags. Set 'boot_grub' flag. This partition is going to be used by grub (boot manager)
+ - create partition of ext4 type for the mounting point: /
+ - create partition of ext4 type for the mounting point: /home
+ - create partition of size the same as your RAM of ext4 type for the mounting point: swap
+(swap means that this partition will be used by the system as RAM when needed, it's an optional partition)
+ - accept/execute the changes
+ - right click on boot_grub partition -> Manage Flags. Set 'swap' flag. This partition is going to be used by grub (boot manager)
+c) install Linux (i.e. Ubuntu 24.04) and during installation set it to manually decide about partitions when asked
+ - set mounting points / , /home and swap on partitons that you have created
+ - leave boot_grub partition as it is, it should be automatically handled by the system
+
