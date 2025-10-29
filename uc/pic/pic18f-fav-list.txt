@@ -1,9 +1,17 @@
-PIC18F MCUs that are interesting:
- - PIC18F47J53                       - the one that is on PIC Clicker board. Has USB. Similiar ones: PIC18F26J53, PIC18F27J53, PIC18F46J53,
+PIC18F MCUs, devikts and adapters that are interesting:
+### Adapters ###
+- AC164162                           - Curiosity Nano Base, compatible with most Curiosity Nano boards
+- AC80T88A                           - Curiosity Nano Touch Adaptor, compatible with selected Curiosity Nano boards that are meant to explore the touch capacitive peripheral
+### Devkits ###
  - DM182030                          - development kit with PIC18F57Q84,
  - EV01G21A                          - development kit with PIC18F56Q71,
  - DM182029                          - development kit with PIC18F47Q10,
- - PIC18F57Q84                       - PIC18F family, 128kB Flash, 8kB RAM, 1kB EEPROM, 44 I/O pins, contains CAN/LIN,
+ - EV70C97A                          - development kit with PIC18F16Q40
+ - EV26Q64A                          - development kit with PIC18F16Q41
+ - EV73T25A                          - development kit with PIC18F16Q20
+### MCUs ###
+ - PIC18F47J53                       - the one that is on PIC Clicker board. Has USB. Similiar ones: PIC18F26J53, PIC18F27J53, PIC18F46J53,
+ - PIC18F57Q84                       - PIC18F family, 128kB Flash, 12kB RAM, 1kB EEPROM, 44 I/O pins, contains CAN/LIN,
  - PIC18F56Q71                       - PIC18F family, 64kB Flash, 4kB RAM, 256B EEPROM, 44 I/O pins,
  - PIC18F47Q43                       - PIC18F family, 128kB Flash, 8kB RAM, 1kB EEPROM, 36 I/O pins,
  - PIC18F24K50                       - PIC18F family, 16kB Flash, 2kB RAM, 256B EEPROM, 22 I/O pins, has USB. Similiar ones: PIC18F25K50, PIC18F45K50,
