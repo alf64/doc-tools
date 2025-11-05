@@ -1,0 +1,26 @@
+####################################################
+############### pic18f-tips.txt ####################
+############### Tips for pic18f ####################
+####################################################
+
+
+################# Placing function at selected absolute address ##############
+The syntax is:
+asm("global _Foo")
+__at(addr) void Foo(void) {}
+
+----- Example of placing function at address 0x1300: -----
+----- Example start -----
+asm("global _Boot_SoftEntry"); // don't let the compiler optimize this function out! (because there is no direct call to it, only jump at its addr)
+__at(0x1300) void Boot_SoftEntry (void)
+{
+    // do something
+}
+----- Example end -----
+
+
+##############################################################################
+
+
+
+
