@@ -104,3 +104,11 @@ If the listed files are okay for you to delete, call:
 find . -iname '*.txt' -type f -delete
 Make sure the '-delete' argument is specified as last in this command. Otherwise the command may remove everything in your current folder.
 
+
+###### Making binary image of your pendrive or sd-card, or external hard drive #######
+Use dd for it!
+Usage would be: sudo dd if=/dev/sdb of=~/USB_image conv=noerror
+where /dev/sdb is your usb drive as listed by sudo fdisk -l and ~/USB_image is the image file where the copy will be made (a path where the image file will be created).
+To restore the image to another USB drive just invert the process: sudo dd if=~/USB_image of=/dev/sdb will restore ~/USB_image to the device sdb. Just make sure that the new USB drive is as big or bigger than the original one.
+You can also mount the image file you just created into a path without need to restore it first to another USB drive with mount ~/USB_image /mnt/USB_image -o loop.
+It may be required to unmount the usb drive on which you are flashing the image.
