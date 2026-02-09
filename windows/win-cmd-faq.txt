@@ -34,5 +34,14 @@ cd <path-to-directory>
 --- Delete currently written command
 'Ctrl + Backspace'
 
+--- Open classic 'Control Panel' in Windows 10/11:
+Hit Win+R which will open small 'Run...' window.
+In the window type: appwiz.cpl and hit Enter
+Control Panel will open, listing installed apps. Now you can navigate it freely and dive into all the options offered by it.
 
-
+--- Install Windows features from .cab files
+If you have a .cab file that contains Windows feature, you can install it using the following command:
+DISM /Online /Enable-Feature /FeatureName:NetFx3 /All /Source:D:\sources\sxs /LimitAccess
+Where:
+ - /Source argument is a path where your .cab file is (in this example: D:\sources\sxs).
+ - /FeatureName is a part of a .cab filename
