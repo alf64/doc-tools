@@ -5,7 +5,7 @@
 
 
 
-##### Using pnputil - utility for managing device drivers #####
+########## Using pnputil - utility for managing device drivers ##########
 Using pnputil to install driver:
 pnputil /add-driver <driver-file.inf> /install /force /reboot
 
@@ -14,11 +14,42 @@ pnputil /enum-drivers
 
 Deleting driver
 pnputil /delete-driver <driver-file-obtained-fromenum-drivers.inf> /uninstall /force /reboot
-#########################
+##################################################
 
 
 
-##### Other commands & hints #####
+########## Configure Windows 10 (and 11) to act as NTP (Ntwork Time Protocol) server ##########
+Open the command prompt (cmd) as administrator and execute commands described below.
+    // Stop the Windows time service for the purpose of reconfiguration:
+    net stop W32Time
+
+    // Reconfigure the service
+    reg add “HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\services\W32Time\Config” /v LocalClockDispersion /t REG_DWORD /d 0 /f
+    reg add “HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\W32Time\Parameters” /v LocalNTP /t REG_DWORD /d 1 /f
+    reg add “HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\services\W32Time\TimeProviders\NtpServer” /v Enabled /t REG_DWORD /d 1 /f
+    reg add “HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\services\W32Time\Config” /v AnnounceFlags /t REG_DWORD /d 5 /f
+
+    // Set service auto-start
+    sc config W32Time start=auto
+
+    // Start the Windows time service
+    net start W32Time
+
+    // Check if the NTP server is enabled:
+    w32tm /query /configuration
+    // Check the 2nd to last line in the output; Enabled: 1 (local) is correct.
+
+    // Add a rule to the firewall to allow this service:
+    netsh advfirewall firewall add rule name=”NTP Server” dir=in protocol=udp localport=123 profile=any enable=yes action=allow
+
+    // You can test the service from an external computer that runs Windows and is connected to the network with the server, with the following command:
+    w32tm /stripchart /computer:192.168.0.10 /samples:4 /dataonly
+    // (replace the IP address with that of the computer that now runs the NTP Server)
+##################################################
+
+
+
+########## Other commands & hints ##########
 --- Display file tree of a folder
 tree <name-of-the-folder> /F
 
@@ -45,3 +76,4 @@ DISM /Online /Enable-Feature /FeatureName:NetFx3 /All /Source:D:\sources\sxs /Li
 Where:
  - /Source argument is a path where your .cab file is (in this example: D:\sources\sxs).
  - /FeatureName is a part of a .cab filename
+##################################################

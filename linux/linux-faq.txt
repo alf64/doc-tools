@@ -112,3 +112,14 @@ where /dev/sdb is your usb drive as listed by sudo fdisk -l and ~/USB_image is t
 To restore the image to another USB drive just invert the process: sudo dd if=~/USB_image of=/dev/sdb will restore ~/USB_image to the device sdb. Just make sure that the new USB drive is as big or bigger than the original one.
 You can also mount the image file you just created into a path without need to restore it first to another USB drive with mount ~/USB_image /mnt/USB_image -o loop.
 It may be required to unmount the usb drive on which you are flashing the image.
+
+
+###### NTP (Network Time Protocol) client on Linux #######
+Install ntp client (ntpdate utility) by invoking command:
+sudo apt install ntpsec-ntpdate
+Query the server to ask for its current time:
+ntpdate -q <IP-address-of-server-OR-DNS-name>
+Examples:
+ntpdate -q pool.ntp.org
+ntpdate -q 178.215.228.24
+To update your computer's time with server time, use the command above but without -q argument.
