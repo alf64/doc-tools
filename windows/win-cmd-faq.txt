@@ -76,4 +76,11 @@ DISM /Online /Enable-Feature /FeatureName:NetFx3 /All /Source:D:\sources\sxs /Li
 Where:
  - /Source argument is a path where your .cab file is (in this example: D:\sources\sxs).
  - /FeatureName is a part of a .cab filename
+
+--- Change default Terminal from PowerShell into Command Prompt (cmd.exe):
+ - right click anywhere in File Explorer and select 'Open in Terminal'
+ - by default PowerShell will open
+ - in PowerShell, right click on its name bar (on the top of the window) and select 'Settings'
+ - Startup settings will open, in the first 'Default profile' setting change 'PowerShell' into 'Command Prompt'. Hit Save button
+ - from now on right clicking anywhere in File Explorer and selecting 'Open in Terminal' will open Command Prompt instead of PowerShell
 ##################################################
