@@ -65,10 +65,20 @@ cd <path-to-directory>
 --- Delete currently written command
 'Ctrl + Backspace'
 
+--- Where the useful Windows apps are that you can run using cmd.exe or through Run prompt (Win+R)
+They are in C:\Windows\System32\
+
 --- Open classic 'Control Panel' in Windows 10/11:
 Hit Win+R which will open small 'Run...' window.
 In the window type: appwiz.cpl and hit Enter
 Control Panel will open, listing installed apps. Now you can navigate it freely and dive into all the options offered by it.
+Alternatively you can call appwiz.cpl from cmd.exe
+
+--- Open 'Disk Management' in Windows 10/11:
+Hit Win+R which will open small 'Run...' window.
+In the window type: diskmgmt.msc and hit Enter
+Disk Management window app will open, allowing you to manage disks (delete & create partitions).
+Alternatively you can call diskmgmt.msc from cmd.exe (cmd.exe needs to be opened as Administrator).
 
 --- Install Windows features from .cab files
 If you have a .cab file that contains Windows feature, you can install it using the following command:
