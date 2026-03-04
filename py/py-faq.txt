@@ -4,6 +4,15 @@
 
 
 
+---------------------------- Python nomenclature ----------------------------------
+Hierarchy:
+ 1. Module - a source file of .py extension. Contains source code (set of functions).
+ 2. Package - a set of modules.
+ 3. Library - a set of packages.
+---------------------------------------------------------------------------------------------------------
+
+
+
 -------------- Python Launcher - Selecting python version, listing available pythons --------------------
 If you have more than one version of python installed, use python launcher ('py') to select the one you want.
 # See help of python launcher
@@ -74,3 +83,23 @@ pip install <package-name>==<desired-package-version>
 pip uninstall <package-name>
 
 ---------------------------------------------------------------------------------------------------------
+
+
+
+-------------- Exporting packages from one PC ('source', which is online) to import them into another PC ('dest', which is offline) --------------------
+# On the 'source' PC, dump the list of installed packages into the text file
+pip freeze > requirements.txt
+
+# On the 'source' PC, download (from the web through pip) the packages from the list into a folder.
+# The 'download' sub-command only downloads the packages, but does not install them. It downloads the dependencies also.
+pip download -r requirements.txt -d path_to_the_folder
+
+# Move the folder with packages onto the 'dest' PC. Move the requirements.txt file also.
+
+# On the 'dest' PC run the following command that will install all packages mention in requirements.txt:
+pip install -r requirements.txt --no-index --find-links=path_to_the_folder
+# Alternatively you can install single particular package manually with the following command:
+pip install --no-index --find-links=path_to_the_folder <packetname>
+
+---------------------------------------------------------------------------------------------------------
+

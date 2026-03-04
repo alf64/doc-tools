@@ -1,0 +1,105 @@
+###################################
+##########   pydev-faq   ##########
+###################################
+
+
+
+-------------------------------------------- What is PyDev --------------------------------------------
+PyDev is a plugin for Eclipse IDE that makes python development easier in this IDE.
+
+PyDev website: https://www.pydev.org/
+-------------------------------------------------------------------------------------------------------
+
+
+
+-------------------------------- How-to-install Eclipse IDE + PyDev -----------------------------------
+PyDev can be downloaded & installed through Eclipse IDE itself in its plugins manager.
+However this instruction focuses on manual offline installation.
+
+1. Get the .zip containing PyDev. The most up-to-date version for the moment of writing this manual
+is: 'PyDev 13.1.0.zip'
+
+2. Install Eclipse IDE of your choice. I prefer the distribution marked as 'for C/C++ developers'.
+The most up-to-date version for the moment of writing this manual is: 2025-12-R
+The installation of Eclipse IDE is simply taking it in a .zip form and extracting it to the location
+of your choice.
+
+3. In the directory where the Eclipse IDE is installed, find out the folder called 'dropins'.
+It should be initially empty on a fresh new Eclipse IDE installation.
+Unpack the contens of 'PyDev 13.1.0.zip' into this 'dropins' folder.
+
+4. Run Eclipse IDE (eclipse.exe) and verify if PyDev is successfully installed & recognized by
+selecting: 'Window -> Preferences' and checking if there is a PyDev item on the list of categories
+on the left.
+
+5. For your convenience you can set the perspective of Eclipse IDE to PyDev:
+Window -> Perspective -> Open Perspective -> Other... -> PyDev
+This will adjust the menus of Eclipse IDE to be more appropriate to work with python.
+
+6. Install Python (up-to-date for the moment of writing this manual is: 3.14).
+It is recommended for user to have python and all its dependencies (packets)
+being installed and managed in one path, so the recommended way of installation is
+as follows:
+In the installer options set:
+ - use admin privileges when installing py.exe,
+ - add python.exe to PATH.
+Choose Customize Installation and select the following options:
+ - for all users (requires admin privileges)
+Upon clicking 'Next' there may be an opportunity to choose 'Advanced Options' in which you should choose:
+ - install Python 3.14 for all uses,
+ - Add Python to environmental variables.
+Default install location could be set to something like: C:\Program Files\Python314 but you can change it to your own (i.e. C:\installations\python\v3.14.3)
+After successfull installation there may be an option for 'Disable path length limit', it is recommended to choose it.
+Restart pc, run cmd.exe and execute: python --version
+If the command is recognized successfully and displays version, then the installation ended up with success.
+You should now have python in i.e. C:\Program Files\Python314 and also packets you will download will
+also be placed there rather than i.e. AppData specific for user.
+
+7. Configure Python installation you would like to use with 'Eclipse IDE + PyDev'. It is called 'interpreter'.
+In Eclipse IDE navigate to Window -> Preferences -> PyDev -> Interpreters -> Python Interpreter
+It may be possible that your Python installation is on the list, but it may be not.
+Add your installation of Python to the list using 'New...' -> 'Browse for...' and point it to python.exe from your python installation dir.
+Assign the name for this interpreter, i.e. 'Python-v3.14.3'.
+The prompt will automatically detect all relevant python resources, make sure all are selected and hit okay.
+There are useful things there, i.e. you can inspect what packages are installed for this python you have selected.
+Hit Apply and you are done.
+
+8. You can configure Eclipse IDE on your own. (Window -> Preferences)
+You can configure PyDev for your convenience (Window -> Preferences -> PyDev)
+Useful things regarding code to configure are in : Window -> Preferences -> PyDev -> Editor
+-------------------------------------------------------------------------------------------------------
+
+
+
+-------------------------------- Creating new python project -----------------------------------
+Basically you operate the whole as an Eclipse IDE.
+
+To create new python project:
+File -> New -> PyDev Project
+The prompt will open to set the name of the project, the interpreter (installed python version) and stuff.
+
+There will be an option to 'Add project directory to the PYTHONPATH'
+The IDE uses PYTHONPATH as an evnrionmental variable that holds path to modules/packets created by
+the user itself. Therefore when you want to 'import' some module written by yourself, you just
+write 'import nameofmodule' and IDE tries to resolve path to it based on PYTHONPATH.
+
+My most recommended option is: "Create 'src' folder and add it to the PYTHONPATH".
+This option creates 'src' subdirectory within your project and assumes your code sources will be there.
+
+Your project will be created.
+You can add new file (of .py extension) to it and write the code.
+
+If you will ever need to add other folders to PYTHONPATH, simply right-click the project on the tree
+and select Properties. There will be 'PyDev - PYTHONPATH' option which will allow for adding new paths.
+
+
+
+-------------------------------------------------------------------------------------------------------
+
+
+
+-------------------------------- Creating project from existing sources -----------------------------------
+If you have some project that was managed in Eclipse IDE + PyDev, then you can open it by:
+File > import > general > existing projects into workspace
+
+-------------------------------------------------------------------------------------------------------

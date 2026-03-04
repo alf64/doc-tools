@@ -93,4 +93,10 @@ Where:
  - in PowerShell, right click on its name bar (on the top of the window) and select 'Settings'
  - Startup settings will open, in the first 'Default profile' setting change 'PowerShell' into 'Command Prompt'. Hit Save button
  - from now on right clicking anywhere in File Explorer and selecting 'Open in Terminal' will open Command Prompt instead of PowerShell
+
+--- Where the apps installed thorugh MS Store are:
+C:\Users\username\AppData\Local\Microsoft\WindowsApps\
+
+--- How to call the 'Set Environmental Variables' window from cmd:
+rundll32 sysdm.cpl,EditEnvironmentVariables
 ##################################################
