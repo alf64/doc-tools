@@ -99,4 +99,11 @@ C:\Users\username\AppData\Local\Microsoft\WindowsApps\
 
 --- How to call the 'Set Environmental Variables' window from cmd:
 rundll32 sysdm.cpl,EditEnvironmentVariables
+
+--- Desktop shorcuts handling in .cmd ---
+You may see shortcuts on your Desktop, but when you cd to the C:\Users\<username>\Desktop and inspect (command: dir) what's there you can
+find out that they are in fact not there.
+The reason is that they may reside in public desktop, which is: C:\Users\Public\Desktop (this dir is hidden in file explorer)
+Things at public desktop are visible in all users desktop, as they usually contains shortcuts for apps installed with 'for all users' option.
+You may delete these shortcuts in public desktop and they should disappear from your desktop.
 ##################################################

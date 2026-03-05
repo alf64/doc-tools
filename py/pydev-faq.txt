@@ -77,21 +77,42 @@ Basically you operate the whole as an Eclipse IDE.
 To create new python project:
 File -> New -> PyDev Project
 The prompt will open to set the name of the project, the interpreter (installed python version) and stuff.
+You can choose the directory of the project - this could be your workspace (default) or you can
+create your own folder (preferably with a project name) and point to it.
 
 There will be an option to 'Add project directory to the PYTHONPATH'
-The IDE uses PYTHONPATH as an evnrionmental variable that holds path to modules/packets created by
+The IDE uses PYTHONPATH as an evnrionmental variable that holds path to modules/packages created by
 the user itself. Therefore when you want to 'import' some module written by yourself, you just
 write 'import nameofmodule' and IDE tries to resolve path to it based on PYTHONPATH.
 
 My most recommended option is: "Create 'src' folder and add it to the PYTHONPATH".
 This option creates 'src' subdirectory within your project and assumes your code sources will be there.
 
-Your project will be created.
-You can add new file (of .py extension) to it and write the code.
-
 If you will ever need to add other folders to PYTHONPATH, simply right-click the project on the tree
 and select Properties. There will be 'PyDev - PYTHONPATH' option which will allow for adding new paths.
 
+Your project will be created. There will be one folder underneath called 'src'.
+Now to add file with a code, right click on the 'src' folder and hit 'New -> PyDev Package'
+Give it a name and hit Finish. You can create more complex, nested packages by giving a name with a dot.
+I.e. hello.nest1 will create 'hello' subfolder and 'nest1' subfolder within 'hello' subfolder.
+For beginners, start without additional nesting. Give a simple name to a package i.e. 'hello'.
+In the project tree you will see new folder being created called 'hello' and within that folder
+there will be an empty '__init__.py' file.
+
+Basically you now need to create the first file with a source code.
+Right click on the folder/package you have created ('hello') and select 'New -> PyDev Module'
+Call it somehow, i.e. 'main'
+In the prompt, select 'Module: Main' as this is going to be your entry point (main module of the package).
+
+A new file will be created - main.py. With the entry code in which you can add your functionality.
+
+To run the code, highlight the main.py file in project tree, then find the green Play Button (or select Run -> Run as -> 'Python Run') at the top
+and hit it. If the app works only as a 'console app', you should see the result in Console window at the bottom
+of the IDE screen.
+
+To debug the code, place the breakpoint on desired line (i.e. by double clicking on line number).
+Then hit the debug icon on the top. A new perspective called 'Debug' will open. It allows you
+to inspect variables, execute the code step-by-stuff and other stuff.
 
 
 -------------------------------------------------------------------------------------------------------

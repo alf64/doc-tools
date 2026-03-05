@@ -4,11 +4,16 @@
 
 
 
----------------------------- Python nomenclature ----------------------------------
+---------------------------- Basics ----------------------------------
 Hierarchy:
  1. Module - a source file of .py extension. Contains source code (set of functions).
  2. Package - a set of modules.
  3. Library - a set of packages.
+
+Documentation:
+For the built-in python functions and packages, there is a nice html documentation provided in the place
+on your computer where the python has been installed, within the Docs/ directory. Find the index.html
+file there and run it.
 ---------------------------------------------------------------------------------------------------------
 
 
@@ -69,9 +74,18 @@ The following has to be done after moving to a new location:
 
 
 
--------------- Installing packets --------------------
-# package manager help
+-------------- Managing packages --------------------
+# package manager is called pip and you can ask it for help
 pip --help
+
+# list installed packages (including all, even pip)
+pip list
+
+# list installed packages (excluding things like pip)
+pip freeze
+
+# dump list of installed packages into txt file
+pip freeze > requirements.txt
 
 #  Install package of a given <package-name>
 pip install <package-name>
@@ -79,8 +93,24 @@ pip install <package-name>
 #  Install package of a given <package-name> and particular version
 pip install <package-name>==<desired-package-version>
 
+# Install packages listed in txt file
+pip install -r requirements.txt
+
 #  Uninstall package of a given <package-name>
 pip uninstall <package-name>
+# it does not uninstall dependencies
+
+# Install packages listed in txt file
+pip uinstall -r requirements.txt
+
+# locate where the package has been installed on the system
+pip show <package-name>
+
+# download (without installing) package into a folder. It downloads all dependencies also.
+pip download <packagename> -d path_to_folder
+
+# install package from a folder
+pip install --no-index --find-links=path_to_folder <packagename>
 
 ---------------------------------------------------------------------------------------------------------
 
@@ -99,7 +129,32 @@ pip download -r requirements.txt -d path_to_the_folder
 # On the 'dest' PC run the following command that will install all packages mention in requirements.txt:
 pip install -r requirements.txt --no-index --find-links=path_to_the_folder
 # Alternatively you can install single particular package manually with the following command:
-pip install --no-index --find-links=path_to_the_folder <packetname>
+pip install --no-index --find-links=path_to_the_folder <packagename>
 
 ---------------------------------------------------------------------------------------------------------
 
+
+
+-------------- Using pyinstaller to bundle script and dependencies into single .exe --------------------
+# install pyinstaller
+pip install pyinstaller
+# once installed, pyinstaller can be called through cmd directly just like pip
+
+# Create .exe from your script and set icon based on .ico file:
+pyinstaller --onefile mainScript.py
+# pyinstaller parses your mainScript.py and resolves all dependencies (sub-scripts, packages, binaries)
+
+# pyinstaller options:
+--windowed                 - means there will be no console involved for I/O at all. You won't see anything in cmd.
+                           Use this if your script is a pure GUI one.
+--name=nameForYourExe      - name of the .exe file. If you don't pass this, the name will be equal to script name.
+--icon=icon.ico            - icon file to be used for .exe. If you don't pass this, default one will be used.
+
+# pyinstaller creates:
+ - dist/                   - directory with created .exe file
+ - build/                  - directory that is temporary for building .exe and you can delete it
+ - .spec                   - file with options that pyinstaller used to create .exe
+                           It can be deleted after creating .exe, but it may be cool to keep it
+                           because it can be re-used to once again call pyinstaller with the same options.
+                           To call pyinstaller using these options: pyinstaller options <.spec file>
+---------------------------------------------------------------------------------------------------------
