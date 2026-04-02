@@ -107,3 +107,36 @@ The reason is that they may reside in public desktop, which is: C:\Users\Public\
 Things at public desktop are visible in all users desktop, as they usually contains shortcuts for apps installed with 'for all users' option.
 You may delete these shortcuts in public desktop and they should disappear from your desktop.
 ##################################################
+
+
+
+########## Managing network routing table ##########
+# All commands referenced below are to be used in cmd.exe.
+# Assumption: computer's IP is static and exist in 192.168.21 network, i.e. computer's IP is 192.168.21.3
+# In the same network there exist another device of IP 192.168.21.211 and this device acts a gateway to another network (10.1.1)
+
+# Displaying routing table for IPv4:
+route print -4
+# The priority of routing is most probably from bottom to top.
+# This means that firstly the rule at the bottom is rspected, then if it does not resolve, the next one above is taken into account, etc.
+
+# Adding new routing rule:
+route add <destination-ip> MASK <subnet-mask> <gateway-ip>
+
+# Add new routing rule - example for 10.1.1 'outside network':
+route add 10.1.1.0 MASK 255.255.255.0 <gateway-ip>
+# example command:
+# route add 10.1.1.0 MASK 255.255.255.0 192.168.21.211
+# Above command means that any access to/from network 10.1.1 must come to/from (or simply: through) 192.168.21.211 (because the 192.168.21.211 acts as a gateway in your own network)
+# I.e. when on your computer you do 'ping 10.1.1.11', the packets will be send to the device with IP: 192.168.21.211 and this device should pass it to target
+# device with IP: 10.1.1.11 (target device exists in another network - 10.1.1 - and must be reached through the gateway).
+# Same goes for receiving packets from target device - they will be received through the gateway.
+
+# Added routing rule exists only until computer's power off.
+# If you want to make the rule persistent, use the '-p' flag when you do 'route add' command.
+
+# Routing rules can be deleted using the following command:
+route delete <destination-ip>
+# example command:
+# route delete 10.1.1.0
+##################################################

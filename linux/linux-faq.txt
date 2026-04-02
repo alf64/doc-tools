@@ -123,3 +123,21 @@ Examples:
 ntpdate -q pool.ntp.org
 ntpdate -q 178.215.228.24
 To update your computer's time with server time, use the command above but without -q argument.
+
+
+########## Managing network routing table ##########
+# Assumption: computer's IP is static and exist in 192.168.21 network, i.e. computer's IP is 192.168.21.3
+# In the same network there exist another device of IP 192.168.21.211 and this device acts a gateway to another network (10.1.1)
+# Install net-tools to get the route utility:
+sudo apt-get install net-tools
+# Then you can check what routing rules are available with the following command:
+route -n
+# Example for adding routing rule:
+sudo route add -net 10.1.1.0 netmask 255.255.255.0 gw <gateway-ip>
+# i.e.: sudo route add -net 10.1.1.0 netmask 255.255.255.0 gw 192.168.21.211
+# Above command means that any access to/from network 10.1.1 must come to/from (or simply: through) 192.168.21.211 (because the 192.168.21.211 acts as a gateway in your own network)
+# I.e. when on your computer you do 'ping 10.1.1.11', the packets will be send to the device with IP: 192.168.21.211 and this device should pass it to target
+# device with IP: 10.1.1.11 (target device exists in another network - 10.1.1 - and must be reached through the gateway).
+# Same goes for receiving packets from target device - they will be received through the gateway.
+# Example for deleting routing rule:
+sudo route del -net 10.1.1.0 netmask 255.255.255.0
