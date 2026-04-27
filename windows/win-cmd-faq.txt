@@ -85,7 +85,7 @@ If you have a .cab file that contains Windows feature, you can install it using 
 DISM /Online /Enable-Feature /FeatureName:NetFx3 /All /Source:D:\sources\sxs /LimitAccess
 Where:
  - /Source argument is a path where your .cab file is (in this example: D:\sources\sxs).
- - /FeatureName is a part of a .cab filename
+ - /FeatureName is a part of a .cab filename. Example filename: Microsoft-Windows-NetFx3-OnDemand-Package~31bf3856ad364e35~amd64~~.cab
 
 --- Change default Terminal from PowerShell into Command Prompt (cmd.exe):
  - right click anywhere in File Explorer and select 'Open in Terminal'
@@ -106,6 +106,13 @@ find out that they are in fact not there.
 The reason is that they may reside in public desktop, which is: C:\Users\Public\Desktop (this dir is hidden in file explorer)
 Things at public desktop are visible in all users desktop, as they usually contains shortcuts for apps installed with 'for all users' option.
 You may delete these shortcuts in public desktop and they should disappear from your desktop.
+
+--- Smart App Control ---
+Windows 11 introduced Smart App Control ('Inteligentna kontrola aplikacji'), which can block your apps when it decides that they are dangerous.
+What's worse you may not even know that your app has been blocked.
+I had a trouble installing MS Office 2013 - the installer was giving me a general error during installation.
+I switched the Smart App Control off and it helped. You can switch it off by doing the following:
+Ustawienia -> Prywatnosc i zabezpieczenia -> Zabezpieczenia Windows -> Kontrola aplikacji i przegladarki -> Inteligentna kontrola aplikacji -> Wylacz
 ##################################################
 
 
